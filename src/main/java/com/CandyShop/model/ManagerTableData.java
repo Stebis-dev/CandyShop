@@ -1,4 +1,4 @@
-package com.kursinis.CandyShop.model;
+package com.CandyShop.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Getter;

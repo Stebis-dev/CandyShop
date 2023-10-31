@@ -1,4 +1,4 @@
-package com.kursinis.CandyShop.fxControllers;
+package com.CandyShop.fxControllers;
 
 import javafx.scene.control.Alert;
 

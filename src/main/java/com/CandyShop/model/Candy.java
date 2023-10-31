@@ -1,4 +1,4 @@
-package com.kursinis.CandyShop.model;
+package com.CandyShop.model;
 
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;

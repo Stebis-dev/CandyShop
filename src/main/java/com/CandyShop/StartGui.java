@@ -1,4 +1,4 @@
-package com.kursinis.CandyShop;
+package com.CandyShop;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

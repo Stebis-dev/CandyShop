@@ -7,10 +7,10 @@ module com.kursinis.prif4kursinis {
     requires jakarta.persistence;
 
 
-    opens com.kursinis.CandyShop to javafx.fxml;
-    exports com.kursinis.CandyShop;
-    opens com.kursinis.CandyShop.model to javafx.fxml, org.hibernate.orm.core;
-    exports com.kursinis.CandyShop.model;
-    opens com.kursinis.CandyShop.fxControllers to javafx.fxml;
-    exports com.kursinis.CandyShop.fxControllers to javafx.fxml;
+    opens com.CandyShop to javafx.fxml;
+    exports com.CandyShop;
+    opens com.CandyShop.model to javafx.fxml, org.hibernate.orm.core;
+    exports com.CandyShop.model;
+    opens com.CandyShop.fxControllers to javafx.fxml;
+    exports com.CandyShop.fxControllers to javafx.fxml;
 }

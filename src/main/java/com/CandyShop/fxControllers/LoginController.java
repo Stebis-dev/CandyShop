@@ -1,8 +1,8 @@
-package com.kursinis.CandyShop.fxControllers;
+package com.CandyShop.fxControllers;
 
-import com.kursinis.CandyShop.StartGui;
-import com.kursinis.CandyShop.hibernateControllers.UserHib;
-import com.kursinis.CandyShop.model.User;
+import com.CandyShop.StartGui;
+import com.CandyShop.hibernateControllers.UserHib;
+import com.CandyShop.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import javafx.fxml.FXML;
@@ -35,6 +35,7 @@ public class LoginController implements Initializable {
         Parent parent = fxmlLoader.load();
         //Po sios dalies as galiu pasiekti kontrolerius
         RegistrationController registrationController = fxmlLoader.getController();
+
         registrationController.setData(entityManagerFactory);
         Scene scene = new Scene(parent);
         Stage stage = (Stage) loginField.getScene().getWindow();

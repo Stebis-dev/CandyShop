@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="369.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/20.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.kursinis.CandyShop.fxControllers.RegistrationController">
+            fx:controller="com.CandyShop.fxControllers.RegistrationController">
     <children>
         <TextField fx:id="loginField" layoutX="26.0" layoutY="27.0" prefHeight="26.0" prefWidth="163.0"
                    promptText="Enter login:" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="235.8"/>

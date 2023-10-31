@@ -1,4 +1,4 @@
-package com.kursinis.CandyShop.model;
+package com.CandyShop.model;
 
 public enum ProductType {
     CANDY,

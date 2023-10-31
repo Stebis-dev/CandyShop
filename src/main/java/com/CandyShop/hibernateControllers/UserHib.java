@@ -1,8 +1,8 @@
-package com.kursinis.CandyShop.hibernateControllers;
+package com.CandyShop.hibernateControllers;
 
-import com.kursinis.CandyShop.model.Customer;
-import com.kursinis.CandyShop.model.Manager;
-import com.kursinis.CandyShop.model.User;
+import com.CandyShop.model.Customer;
+import com.CandyShop.model.Manager;
+import com.CandyShop.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;

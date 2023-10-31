@@ -1,12 +1,12 @@
-package com.kursinis.CandyShop.fxControllers;
+package com.CandyShop.fxControllers;
 
-import com.kursinis.CandyShop.StartGui;
-import com.kursinis.CandyShop.hibernateControllers.CustomHib;
-import com.kursinis.CandyShop.hibernateControllers.UserHib;
-import com.kursinis.CandyShop.model.Cart;
-import com.kursinis.CandyShop.model.Customer;
-import com.kursinis.CandyShop.model.Manager;
-import com.kursinis.CandyShop.model.User;
+import com.CandyShop.StartGui;
+import com.CandyShop.hibernateControllers.CustomHib;
+import com.CandyShop.hibernateControllers.UserHib;
+import com.CandyShop.model.Cart;
+import com.CandyShop.model.Customer;
+import com.CandyShop.model.Manager;
+import com.CandyShop.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

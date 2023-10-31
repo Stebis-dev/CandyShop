@@ -1,9 +1,9 @@
-package com.kursinis.CandyShop.hibernateControllers;
+package com.CandyShop.hibernateControllers;
 
-import com.kursinis.CandyShop.model.Comment;
-import com.kursinis.CandyShop.model.Product;
-import com.kursinis.CandyShop.model.User;
-import com.kursinis.CandyShop.model.Warehouse;
+import com.CandyShop.model.Comment;
+import com.CandyShop.model.Product;
+import com.CandyShop.model.User;
+import com.CandyShop.model.Warehouse;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

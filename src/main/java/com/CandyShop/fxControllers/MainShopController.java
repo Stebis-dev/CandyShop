@@ -1,7 +1,7 @@
-package com.kursinis.CandyShop.fxControllers;
+package com.CandyShop.fxControllers;
 
-import com.kursinis.CandyShop.hibernateControllers.CustomHib;
-import com.kursinis.CandyShop.model.*;
+import com.CandyShop.hibernateControllers.CustomHib;
+import com.CandyShop.model.*;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
