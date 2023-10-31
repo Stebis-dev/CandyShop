@@ -58,9 +58,13 @@ public class RegistrationController implements Initializable {
     private UserHib userHib;
     private CustomHib customHib;
 
-    public void setData(EntityManagerFactory entityManagerFactory) {
+    public void setData(EntityManagerFactory entityManagerFactory, boolean isAdministrator) {
         this.entityManagerFactory = entityManagerFactory;
-        customerSelected();
+        if (isAdministrator) {
+            manegerSelected();
+        } else {
+            customerSelected();
+        }
     }
 
     public void setData(EntityManagerFactory entityManagerFactory, Manager manager) {
@@ -88,7 +92,7 @@ public class RegistrationController implements Initializable {
 
 
     public void createUser() throws IOException {
-        if (passwordField.equals(repeatPasswordField)) {
+        if (passwordField.getText().equals(repeatPasswordField.getText())) {
             if (!loginField.getText().isEmpty() &&
                     !passwordField.getText().isEmpty() &&
                     !repeatPasswordField.getText().isEmpty() &&

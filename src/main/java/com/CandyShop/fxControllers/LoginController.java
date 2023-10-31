@@ -1,6 +1,7 @@
 package com.CandyShop.fxControllers;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.hibernateControllers.GenericHib;
 import com.CandyShop.hibernateControllers.UserHib;
 import com.CandyShop.model.User;
 import jakarta.persistence.EntityManagerFactory;
@@ -35,8 +36,12 @@ public class LoginController implements Initializable {
         Parent parent = fxmlLoader.load();
         //Po sios dalies as galiu pasiekti kontrolerius
         RegistrationController registrationController = fxmlLoader.getController();
+        GenericHib genericHib = new GenericHib(entityManagerFactory);
 
-        registrationController.setData(entityManagerFactory);
+        boolean isAdministrator = genericHib.getRecordCount(User.class) == 0;
+
+        registrationController.setData(entityManagerFactory, isAdministrator);
+
         Scene scene = new Scene(parent);
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("CandyShop");

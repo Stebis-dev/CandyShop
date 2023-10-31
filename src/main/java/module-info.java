@@ -5,6 +5,7 @@ module com.kursinis.prif4kursinis {
     requires java.sql;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
+    requires jbcrypt;
 
 
     opens com.CandyShop to javafx.fxml;
