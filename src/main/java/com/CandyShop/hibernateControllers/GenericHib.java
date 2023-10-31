@@ -97,4 +97,22 @@ public class GenericHib {
         }
         return result;
     }
+
+    public <T> long getRecordCount(Class<T> entityClass) {
+        EntityManager em = null;
+        Long count = 0L;
+        try {
+            em = getEntityManager();
+            CriteriaQuery<Long> query = em.getCriteriaBuilder().createQuery(Long.class);
+            query.select(em.getCriteriaBuilder().count(query.from(entityClass)));
+            Query q = em.createQuery(query);
+            count = (Long) q.getSingleResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+        return count;
+    }
 }
