@@ -1,19 +1,20 @@
-package com.CandyShop.model;
+package com.CandyShop.fxControllers.tableViewGuidelines;
 
+import com.CandyShop.model.Customer;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CustomerTableData {
+public class CustomerTableGuidelines {
     private SimpleStringProperty name;
     private SimpleStringProperty surname;
     private SimpleStringProperty birthdate;
     private SimpleStringProperty address;
     private SimpleStringProperty cardNumber;
 
-    public CustomerTableData(Customer customer) {
+    public CustomerTableGuidelines(Customer customer) {
         this.name = new SimpleStringProperty(customer.getName() != null ? customer.getName() : "");
         this.surname = new SimpleStringProperty(customer.getSurname() != null ? customer.getSurname() : "");
         this.birthdate = new SimpleStringProperty(customer.getBirthDate() != null ? customer.getBirthDate().toString() : "");

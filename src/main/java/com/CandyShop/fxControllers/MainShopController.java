@@ -1,5 +1,7 @@
 package com.CandyShop.fxControllers;
 
+import com.CandyShop.fxControllers.tableViewGuidelines.CustomerTableGuidelines;
+import com.CandyShop.fxControllers.tableViewGuidelines.ManagerTableGuidelines;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
 import jakarta.persistence.EntityManagerFactory;
@@ -35,9 +37,9 @@ public class MainShopController implements Initializable {
     @FXML
     public Tab productsTab;
     @FXML
-    public TableView<CustomerTableData> customerTable;
+    public TableView<CustomerTableGuidelines> customerTable;
     @FXML
-    public TableView<ManagerTableData> managerTable;
+    public TableView<ManagerTableGuidelines> managerTable;
     @FXML
     public TabPane tabPane;
     @FXML
@@ -69,27 +71,27 @@ public class MainShopController implements Initializable {
     @FXML
     public Label productCommentLabel;
     @FXML
-    public TableColumn<CustomerTableData, String> customerTableName;
+    public TableColumn<CustomerTableGuidelines, String> customerTableName;
     @FXML
-    public TableColumn<CustomerTableData, String> customerTableSurname;
+    public TableColumn<CustomerTableGuidelines, String> customerTableSurname;
     @FXML
-    public TableColumn<CustomerTableData, Date> customerTableBirthdate;
+    public TableColumn<CustomerTableGuidelines, Date> customerTableBirthdate;
     @FXML
-    public TableColumn<CustomerTableData, String> customerTableAddress;
+    public TableColumn<CustomerTableGuidelines, String> customerTableAddress;
     @FXML
-    public TableColumn<CustomerTableData, String> customerTableCardnumber;
+    public TableColumn<CustomerTableGuidelines, String> customerTableCardnumber;
     @FXML
-    public TableColumn<ManagerTableData, String> managerEmployeeId;
+    public TableColumn<ManagerTableGuidelines, String> managerEmployeeId;
     @FXML
-    public TableColumn<ManagerTableData, String> managerTableName;
+    public TableColumn<ManagerTableGuidelines, String> managerTableName;
     @FXML
-    public TableColumn<ManagerTableData, String> managerTableSurname;
+    public TableColumn<ManagerTableGuidelines, String> managerTableSurname;
     @FXML
-    public TableColumn<ManagerTableData, String> managerBirthdate;
+    public TableColumn<ManagerTableGuidelines, String> managerBirthdate;
     @FXML
-    public TableColumn<ManagerTableData, String> managerTableMedicalCertificate;
+    public TableColumn<ManagerTableGuidelines, String> managerTableMedicalCertificate;
     @FXML
-    public TableColumn<ManagerTableData, String> managerTableEmploymentDate;
+    public TableColumn<ManagerTableGuidelines, String> managerTableEmploymentDate;
 
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
@@ -228,10 +230,10 @@ public class MainShopController implements Initializable {
     //----------------------Users functionality-------------------------------//
     private void loadUsers() {
         List<Customer> customersList = customHib.getAllRecords(Customer.class);
-        List<CustomerTableData> customerTableDataList = customersList.stream()
-                .map(CustomerTableData::new)
+        List<CustomerTableGuidelines> customerTableGuidelinesList = customersList.stream()
+                .map(CustomerTableGuidelines::new)
                 .collect(Collectors.toList());
-        ObservableList<CustomerTableData> customers = FXCollections.observableArrayList(customerTableDataList);
+        ObservableList<CustomerTableGuidelines> customers = FXCollections.observableArrayList(customerTableGuidelinesList);
 
         customerTable.setItems(customers);
 
@@ -244,10 +246,10 @@ public class MainShopController implements Initializable {
 
     private void loadManagers() {
         List<Manager> managerList = customHib.getAllRecords(Manager.class);
-        List<ManagerTableData> managerTableDataList = managerList.stream()
-                .map(ManagerTableData::new)
+        List<ManagerTableGuidelines> managerTableGuidelinesList = managerList.stream()
+                .map(ManagerTableGuidelines::new)
                 .collect(Collectors.toList());
-        ObservableList<ManagerTableData> managers = FXCollections.observableArrayList(managerTableDataList);
+        ObservableList<ManagerTableGuidelines> managers = FXCollections.observableArrayList(managerTableGuidelinesList);
 
         managerTable.setItems(managers);
 

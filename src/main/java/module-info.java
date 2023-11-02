@@ -14,4 +14,6 @@ module com.kursinis.prif4kursinis {
     exports com.CandyShop.model;
     opens com.CandyShop.fxControllers to javafx.fxml;
     exports com.CandyShop.fxControllers to javafx.fxml;
+    exports com.CandyShop.fxControllers.tableViewGuidelines;
+    opens com.CandyShop.fxControllers.tableViewGuidelines to javafx.fxml, org.hibernate.orm.core;
 }

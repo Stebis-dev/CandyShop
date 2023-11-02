@@ -1,12 +1,13 @@
-package com.CandyShop.model;
+package com.CandyShop.fxControllers.tableViewGuidelines;
 
+import com.CandyShop.model.Manager;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ManagerTableData {
+public class ManagerTableGuidelines {
     private SimpleStringProperty employeeId;
     private SimpleStringProperty name;
     private SimpleStringProperty surname;
@@ -14,7 +15,7 @@ public class ManagerTableData {
     private SimpleStringProperty medicalCertificate;
     private SimpleStringProperty employmentDate;
 
-    public ManagerTableData(Manager manager) {
+    public ManagerTableGuidelines(Manager manager) {
         this.employeeId = new SimpleStringProperty(manager.getEmployeeId() != null ? manager.getEmployeeId() : "");
         this.name = new SimpleStringProperty(manager.getName() != null ? manager.getName() : "");
         this.surname = new SimpleStringProperty(manager.getSurname() != null ? manager.getSurname() : "");
