@@ -1,13 +1,8 @@
 package com.CandyShop.hibernateControllers;
 
-import com.CandyShop.model.Comment;
-import com.CandyShop.model.Product;
-import com.CandyShop.model.User;
-import com.CandyShop.model.Warehouse;
+import com.CandyShop.model.*;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +35,12 @@ public class CustomHib extends GenericHib {
         try {
             em.getTransaction().begin();
             var product = em.find(Product.class, productId);
-            var warehouse = product.getWarehouse();
-            var cart = product.getCart();
+//            var warehouse = product.getWarehouse();
 
-            if (warehouse != null) {
-                warehouse.getInStockProducts().remove(product);
-                em.merge(warehouse);
-            }
-            if (cart != null) {
-                cart.getItemsInCart().remove(product);
-                em.merge(cart);
-            }
+//            if (warehouse != null) {
+//                warehouse.getInStockProducts().remove(product);
+//                em.merge(warehouse);
+//            }
 
             em.remove(product);
             em.getTransaction().commit();
@@ -59,19 +49,18 @@ public class CustomHib extends GenericHib {
         }
     }
 
-    public List<Product> getProductsByCartId(int cartId) {
+    public List<Product> getProductsFromCart(int userId) {
         EntityManager em = getEntityManager();
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Product> query = cb.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
-
-            query.select(root).where(cb.equal(root.get("cart").get("id"), cartId));
+            Root<Cart> root = query.from(Cart.class);
+            Join<Cart, Product> cartProductJoin = root.join("product");
+            query.select(cartProductJoin).where(cb.equal(root.get("customer").get("id"), userId));
 
             TypedQuery<Product> typedQuery = em.createQuery(query);
 
             return typedQuery.getResultList();
-
         } catch (Exception e) {
             return null;
         } finally {
@@ -79,23 +68,89 @@ public class CustomHib extends GenericHib {
         }
     }
 
-    public List<Product> getAvailableProducts() {
+    public List<Product> getProductsFromWarehouse(int warehouseId) {
         EntityManager em = getEntityManager();
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Product> query = cb.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
-
-            query.select(root).where(cb.isNull(root.get("cart").get("id")));
+            Root<WarehouseInventory> root = query.from(WarehouseInventory.class);
+            Join<WarehouseInventory, Product> cartProductJoin = root.join("product");
+            query.select(cartProductJoin).where(cb.equal(root.get("warehouse").get("id"), warehouseId));
 
             TypedQuery<Product> typedQuery = em.createQuery(query);
 
             return typedQuery.getResultList();
-
         } catch (Exception e) {
             return null;
         } finally {
             if (em != null) em.close();
+        }
+    }
+
+    public List<Product> getNotAssignedProducts(int warehouseId) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Product> query = cb.createQuery(Product.class);
+            Root<WarehouseInventory> root = query.from(WarehouseInventory.class);
+            Join<WarehouseInventory, Product> cartProductJoin = root.join("product");
+            query.select(cartProductJoin).where(cb.isNull(root.get("warehouse").get("id")));
+
+            TypedQuery<Product> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteProductFromCart(int userId, int productId) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<Cart> deleteQuery = cb.createCriteriaDelete(Cart.class);
+            Root<Cart> root = deleteQuery.from(Cart.class);
+
+            Predicate whereClause = cb.and(
+                    cb.equal(root.get("customer").get("id"), userId),
+                    cb.equal(root.get("product").get("id"), productId)
+            );
+
+            deleteQuery.where(whereClause);
+
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProductFromWarehouse(int warehouseId, int productId) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+
+            Predicate whereClause = cb.and(
+                    cb.equal(root.get("warehouse").get("id"), warehouseId),
+                    cb.equal(root.get("product").get("id"), productId)
+            );
+
+            deleteQuery.where(whereClause);
+
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -121,20 +176,22 @@ public class CustomHib extends GenericHib {
     public void deleteWarehouse(int warehouseId) {
         EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            var warehouse = em.find(Warehouse.class, warehouseId);
-            List<Product> products = new ArrayList<>(warehouse.getInStockProducts());
-
-            for (Product product : products) {
-                warehouse.getInStockProducts().remove(product);
-                deleteProduct(product.getId());
-            }
-            em.remove(warehouse);
-            em.getTransaction().commit();
+//            em.getTransaction().begin();
+//            var warehouse = em.find(Warehouse.class, warehouseId);
+//            List<Product> products = new ArrayList<>(warehouse.getInStockProducts());
+//
+//            for (Product product : products) {
+//                warehouse.getInStockProducts().remove(product);
+//                deleteProduct(product.getId());
+//            }
+//            em.remove(warehouse);
+//            em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (em != null) em.close();
         }
     }
+
+
 }

@@ -5,11 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -21,9 +18,20 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDate dateCreated;
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Product> itemsInCart;
+
+    @OneToOne
+    private Customer customer;
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    private int amount;
+
+    public Cart(LocalDate dateCreated, Customer customer, Product product) {
+        this.dateCreated = dateCreated;
+        this.customer = customer;
+        this.product = product;
+    }
 
     public Cart(LocalDate dateCreated) {
         this.dateCreated = dateCreated;

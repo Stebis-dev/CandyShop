@@ -16,14 +16,8 @@ public class Candy extends Product {
     private double weight;
     private String chemicalContents;
 
-    public Candy(String title, String description, double weight, String chemicalContents) {
-        super(title, description);
-        this.weight = weight;
-        this.chemicalContents = chemicalContents;
-    }
-
-    public Candy(String title, String description, String manufacturer, Warehouse warehouse, double weight, String chemicalContents) {
-        super(title, description, manufacturer, warehouse);
+    public Candy(String title, String description, String manufacturer, double weight, String chemicalContents) {
+        super(title, description, manufacturer);
         this.weight = weight;
     }
 

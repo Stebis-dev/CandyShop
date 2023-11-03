@@ -105,9 +105,6 @@ public class RegistrationController implements Initializable {
                 if (customerCheckbox.isSelected()) {
                     if (!addressField.getText().isEmpty() &&
                             !cardNoField.getText().isEmpty()) {
-
-                        Cart cart = new Cart(LocalDate.now());
-                        customHib.create(cart);
                         User user = new Customer(
                                 loginField.getText(),
                                 passwordField.getText(),
@@ -115,7 +112,7 @@ public class RegistrationController implements Initializable {
                                 nameField.getText(),
                                 surnameField.getText(),
                                 addressField.getText(),
-                                cardNoField.getText(), cart);
+                                cardNoField.getText());
                         userHib.createUser(user);
                         returnToLogin();
                     } else {

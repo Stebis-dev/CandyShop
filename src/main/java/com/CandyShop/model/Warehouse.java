@@ -24,18 +24,20 @@ public class Warehouse implements Serializable {
     private int id;
     private String title;
     private String address;
+
+    
     @ManyToMany(mappedBy = "worksAtWarehouse", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Manager> managers;
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Product> inStockProducts;
+
+//    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Product> inStockProducts;
 
 
     public Warehouse(String title, String address) {
         this.title = title;
         this.address = address;
-        this.inStockProducts = new ArrayList<>();
         this.managers = new ArrayList<>();
     }
 

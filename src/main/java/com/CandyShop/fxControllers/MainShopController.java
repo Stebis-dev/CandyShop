@@ -7,12 +7,15 @@ import com.CandyShop.model.*;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,11 @@ public class MainShopController implements Initializable {
     @FXML
     public TextField titleWarehouseField;
     @FXML
-    public Tab ordersTab;
+    public ListView<Product> assignedProducts;
+    @FXML
+    public ListView<Product> notAssignedProducts;
+    @FXML
+    public TextField productAmount;
     @FXML
     public Tab productsTab;
     @FXML
@@ -52,8 +59,6 @@ public class MainShopController implements Initializable {
     public TextArea productDescriptionField;
     @FXML
     public ComboBox<ProductType> productType;
-    @FXML
-    public ComboBox<Warehouse> warehouseComboBox;
     @FXML
     public TextField weightField;
     @FXML
@@ -79,7 +84,7 @@ public class MainShopController implements Initializable {
     @FXML
     public TableColumn<CustomerTableGuidelines, String> customerTableAddress;
     @FXML
-    public TableColumn<CustomerTableGuidelines, String> customerTableCardnumber;
+    public TableColumn<CustomerTableGuidelines, String> customerTableCardNumber;
     @FXML
     public TableColumn<ManagerTableGuidelines, String> managerEmployeeId;
     @FXML
@@ -92,6 +97,7 @@ public class MainShopController implements Initializable {
     public TableColumn<ManagerTableGuidelines, String> managerTableMedicalCertificate;
     @FXML
     public TableColumn<ManagerTableGuidelines, String> managerTableEmploymentDate;
+
 
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
@@ -115,21 +121,23 @@ public class MainShopController implements Initializable {
     }
 
     private void limitAccess() {
-        if (currentUser.getClass() == Manager.class) {
-            Manager manager = (Manager) currentUser;
-            if (!manager.isAdmin()) {
-                managerTable.setDisable(true);
-            }
-            tabPane.getTabs().remove(primaryTab);
-            tabPane.getTabs().remove(commentTab);
-        } else if (currentUser.getClass() == Customer.class) {
-            Customer customer = (Customer) currentUser;
-            tabPane.getTabs().remove(usersTab);
-            tabPane.getTabs().remove(warehouseTab);
-            tabPane.getTabs().remove(productsTab);
+        if (false) {
+            if (currentUser.getClass() == Manager.class) {
+                Manager manager = (Manager) currentUser;
+                if (!manager.isAdmin()) {
+                    managerTable.setDisable(true);
+                }
+                tabPane.getTabs().remove(primaryTab);
+                tabPane.getTabs().remove(commentTab);
+            } else if (currentUser.getClass() == Customer.class) {
+                Customer customer = (Customer) currentUser;
+                tabPane.getTabs().remove(usersTab);
+                tabPane.getTabs().remove(warehouseTab);
+                tabPane.getTabs().remove(productsTab);
 
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "WTF", "WTF", "WTF");
+            } else {
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "WTF", "WTF", "WTF");
+            }
         }
     }
 
@@ -141,32 +149,34 @@ public class MainShopController implements Initializable {
 
 
     public void loadTabValues() {
-        if (productsTab.isSelected()) {
-            loadProductListManager();
-            loadCurrentOrder();
-            List<Warehouse> record = customHib.getAllRecords(Warehouse.class);
-            warehouseComboBox.getItems().clear();
-            warehouseComboBox.getItems().addAll(customHib.getAllRecords(Warehouse.class));
-            productTitleField.clear();
-            productManufacturerField.clear();
-            weightField.clear();
-            productDescriptionField.clear();
-            chemicalDescriptionField.clear();
-        } else if (usersTab.isSelected()) {
-            loadUsers();
-            loadManagers();
-        } else if (warehouseTab.isSelected()) {
-            titleWarehouseField.clear();
-            addressWarehouseField.clear();
-            loadWarehouseList();
-        } else if (commentTab.isSelected()) {
-            productCommentLabel.setText("Product");
-            commentTitleField.clear();
-            commentBodyField.clear();
-            loadCommentList();
-        } else if (primaryTab.isSelected()) {
-            loadProductListInCart();
-            loadCurrentOrder();
+        try {
+            if (productsTab.isSelected()) {
+                loadProductListManager();
+                loadCurrentOrder();
+                List<Warehouse> record = customHib.getAllRecords(Warehouse.class);
+                productTitleField.clear();
+                productManufacturerField.clear();
+                weightField.clear();
+                productDescriptionField.clear();
+                chemicalDescriptionField.clear();
+            } else if (usersTab.isSelected()) {
+                loadUsers();
+                loadManagers();
+            } else if (warehouseTab.isSelected()) {
+                titleWarehouseField.clear();
+                addressWarehouseField.clear();
+                loadWarehouseList();
+            } else if (commentTab.isSelected()) {
+                productCommentLabel.setText("Product");
+                commentTitleField.clear();
+                commentBodyField.clear();
+                loadCommentList();
+            } else if (primaryTab.isSelected()) {
+                loadProductListInCart();
+                loadCurrentOrder();
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -187,11 +197,8 @@ public class MainShopController implements Initializable {
     public void addToCart() {
         try {
             Product selectProduct = productList.getSelectionModel().getSelectedItem();
-            Cart cart = customHib.getEntityById(Cart.class, ((Customer) currentUser).getCart().getId());
-            Product product = customHib.getEntityById(Product.class, selectProduct.getId());
-            product.setCart(cart);
-            cart.getItemsInCart().add(product);
-            customHib.update(cart);
+            Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), selectProduct);
+            customHib.create(cart);
             loadProductListInCart();
             loadCurrentOrder();
         } catch (NullPointerException ignored) {
@@ -202,11 +209,7 @@ public class MainShopController implements Initializable {
     public void deleteFromCart() {
         try {
             Product selectProduct = currentOrder.getSelectionModel().getSelectedItem();
-            Cart cart = customHib.getEntityById(Cart.class, ((Customer) currentUser).getCart().getId());
-            cart.getItemsInCart().remove(selectProduct);
-            selectProduct.setCart(null);
-            customHib.update(cart);
-            customHib.update(selectProduct);
+            customHib.deleteProductFromCart(currentUser.getId(), selectProduct.getId());
             loadProductListInCart();
             loadCurrentOrder();
         } catch (NullPointerException ignored) {
@@ -216,15 +219,18 @@ public class MainShopController implements Initializable {
     private void loadCurrentOrder() {
         try {
             currentOrder.getItems().clear();
-            currentOrder.getItems().addAll(customHib.getProductsByCartId(((Customer) currentUser).getCart().getId()));
-        } catch (Exception ignored) {
+            currentOrder.getItems().addAll(customHib.getProductsFromCart(((Customer) currentUser).getId()));
+        } catch (Exception e) {
 
         }
     }
 
     private void loadProductListInCart() {
-        productList.getItems().clear();
-        productList.getItems().addAll(customHib.getAvailableProducts());
+        try {
+            productList.getItems().clear();
+            productList.getItems().addAll(customHib.getAllRecords(Product.class));
+        } catch (Exception ignored) {
+        }
     }
 
     //----------------------Users functionality-------------------------------//
@@ -241,7 +247,7 @@ public class MainShopController implements Initializable {
         customerTableSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         customerTableBirthdate.setCellValueFactory(new PropertyValueFactory<>("birthdate"));
         customerTableAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        customerTableCardnumber.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
+        customerTableCardNumber.setCellValueFactory(new PropertyValueFactory<>("cardNumber"));
     }
 
     private void loadManagers() {
@@ -263,11 +269,6 @@ public class MainShopController implements Initializable {
 
     }
 
-    private void test() {
-        customerTable.getSelectionModel().getSelectedItem();
-
-    }
-
     //----------------------Product functionality-------------------------------//
 
     public void enableProductFields() {
@@ -286,35 +287,31 @@ public class MainShopController implements Initializable {
     }
 
     public void addNewProduct() {
-        Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
-        Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
 
+        Product product = new Product();
         if (productType.getSelectionModel().getSelectedItem() == ProductType.CANDY) {
-            customHib.create(new Candy(
+            product = new Candy(
                     productTitleField.getText(),
                     productDescriptionField.getText(),
                     productManufacturerField.getText(),
-                    warehouse,
                     Double.parseDouble(weightField.getText()),
-                    chemicalDescriptionField.getText()));
+                    chemicalDescriptionField.getText());
         } else if (productType.getSelectionModel().getSelectedItem() == ProductType.DRINK) {
-            customHib.create(new Drinks(
+            product = new Drinks(
                     productTitleField.getText(),
                     productDescriptionField.getText(),
                     productManufacturerField.getText(),
-                    warehouse,
                     Double.parseDouble(weightField.getText()),
-                    chemicalDescriptionField.getText()));
+                    chemicalDescriptionField.getText());
         } else if (productType.getSelectionModel().getSelectedItem() == ProductType.SNACKS) {
-            customHib.create(new Snacks(
+            product = new Snacks(
                     productTitleField.getText(),
                     productDescriptionField.getText(),
                     productManufacturerField.getText(),
-                    warehouse,
                     Double.parseDouble(weightField.getText()),
-                    chemicalDescriptionField.getText()));
+                    chemicalDescriptionField.getText());
         }
-
+        customHib.create(product);
         loadProductListManager();
     }
 
@@ -326,7 +323,7 @@ public class MainShopController implements Initializable {
             product.setTitle(productTitleField.getText());
             product.setDescription(productDescriptionField.getText());
             product.setManufacturer(productManufacturerField.getText());
-            product.setWarehouse(warehouseComboBox.getSelectionModel().getSelectedItem());
+
 
             if (productType.getSelectionModel().getSelectedItem() == ProductType.CANDY) {
                 ((Candy) product).setWeight(Double.parseDouble(weightField.getText()));
@@ -340,8 +337,6 @@ public class MainShopController implements Initializable {
             }
 
             customHib.update(product);
-
-
         } else {
             customHib.deleteProduct(selectedProduct.getId());
             addNewProduct();
@@ -383,7 +378,7 @@ public class MainShopController implements Initializable {
                 }
             }
 
-            warehouseComboBox.getSelectionModel().select(selectedProduct.getWarehouse());
+//            warehouseComboBox.getSelectionModel().select(selectedProduct.getWarehouse());
         } catch (NullPointerException ignored) {
 
         }
@@ -394,14 +389,49 @@ public class MainShopController implements Initializable {
     private void loadWarehouseList() {
         warehouseList.getItems().clear();
         warehouseList.getItems().addAll(customHib.getAllRecords(Warehouse.class));
+
+
+        notAssignedProducts.getItems().clear();
+//        if (warehouseList.getSelectionModel().getSelectedItem() != null) {
+//            notAssignedProducts.getItems().addAll(customHib.getNotAssignedProducts(warehouseList.getSelectionModel().getSelectedItem().getId()));
+//        } else {
+        notAssignedProducts.getItems().addAll(customHib.getAllRecords(Product.class));
+//        }
     }
 
     public void addNewWarehouse() {
         if (!titleWarehouseField.getText().trim().isEmpty() && !addressWarehouseField.getText().trim().isEmpty()) {
             customHib.create(new Warehouse(titleWarehouseField.getText(), addressWarehouseField.getText()));
             loadWarehouseList();
+            loadWarehouseData();
         } else {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Warning", "Empty fields", "Please fill required fields");
+        }
+    }
+
+    public void addProductToWarehouse() {
+        try {
+            Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
+            Product selectedProduct = notAssignedProducts.getSelectionModel().getSelectedItem();
+            WarehouseInventory warehouseInventory = new WarehouseInventory(selectedWarehouse, selectedProduct, Integer.parseInt(productAmount.getText()));
+            customHib.create(warehouseInventory);
+            loadWarehouseData();
+            loadWarehouseList();
+        } catch (NullPointerException ignored) {
+
+        }
+    }
+
+    public void removeProductFromWarehouse() {
+        try {
+            Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
+            Product selectedProduct = assignedProducts.getSelectionModel().getSelectedItem();
+            System.out.println(selectedProduct);
+            customHib.deleteProductFromWarehouse(selectedWarehouse.getId(), selectedProduct.getId());
+            loadWarehouseList();
+            loadWarehouseData();
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -421,13 +451,9 @@ public class MainShopController implements Initializable {
     public void removeWarehouse() {
         try {
             Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
-            if (selectedWarehouse.getInStockProducts().isEmpty()) {
-                Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
-                customHib.delete(Warehouse.class, selectedWarehouse.getId());
-            } else {
-                JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Warning", "Warehouse is not empty", "Please remove products from warehouse");
-                customHib.deleteWarehouse(selectedWarehouse.getId());
-            }
+
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Warning", "Warehouse is not empty", "Please remove products from warehouse");
+            customHib.delete(Warehouse.class, selectedWarehouse.getId());
             loadWarehouseList();
 
         } catch (Exception e) {
@@ -441,8 +467,15 @@ public class MainShopController implements Initializable {
             Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
             titleWarehouseField.setText(selectedWarehouse.getTitle());
             addressWarehouseField.setText(selectedWarehouse.getAddress());
-        } catch (NullPointerException ignored) {
 
+            assignedProducts.getItems().clear();
+            List<Product> warehouseProducts = customHib.getProductsFromWarehouse(selectedWarehouse.getId());
+//        for (Product product : warehouseProducts) {
+//            System.out.println(product.getTitle());
+//        }
+            assignedProducts.getItems().addAll(warehouseProducts);
+
+        } catch (Exception ignored) {
         }
     }
 
@@ -498,4 +531,6 @@ public class MainShopController implements Initializable {
 
         }
     }
+
+
 }
