@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomHib extends GenericHib {
@@ -114,7 +113,7 @@ public class CustomHib extends GenericHib {
         }
     }
 
-    public List<Cart> getProductsFromCart(int userId) {
+    public List<Cart> getUserCarts(int userId) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -127,6 +126,28 @@ public class CustomHib extends GenericHib {
             TypedQuery<Cart> typedQuery = em.createQuery(query);
 
             return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public Cart getUserCartProduct(int userId, int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Cart> query = cb.createQuery(Cart.class);
+            Root<Cart> root = query.from(Cart.class);
+            query.select(root).where(cb.and(
+                    cb.equal(root.get("customer").get("id"), userId),
+                    cb.equal(root.get("product").get("id"), productId))
+            );
+
+            TypedQuery<Cart> typedQuery = em.createQuery(query);
+            return typedQuery.getSingleResult();
         } catch (NullPointerException e) {
             return null;
         } finally {

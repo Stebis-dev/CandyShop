@@ -193,14 +193,21 @@ public class MainShopController implements Initializable {
     }
 
     public void addToCart() {
+        Product selectProduct = null;
         try {
-            Product selectProduct = productList.getSelectionModel().getSelectedItem();
+            selectProduct = productList.getSelectionModel().getSelectedItem();
+            Cart customersCartWithProduct = customHib.getUserCartProduct(currentUser.getId(), selectProduct.getId());
+
+            if (customersCartWithProduct != null) {
+                customersCartWithProduct.addProduct();
+                customHib.update(customersCartWithProduct);
+            }
+        } catch (Exception ignored) {
             Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), selectProduct);
             customHib.create(cart);
+        } finally {
             loadProductListInCart();
             loadCurrentCart();
-        } catch (NullPointerException ignored) {
-
         }
     }
 
@@ -217,7 +224,7 @@ public class MainShopController implements Initializable {
     private void loadCurrentCart() {
         try {
             userCart.getItems().clear();
-            userCart.getItems().addAll(customHib.getProductsFromCart(((Customer) currentUser).getId()));
+            userCart.getItems().addAll(customHib.getUserCarts(((Customer) currentUser).getId()));
         } catch (Exception e) {
 
         }

@@ -39,5 +39,12 @@ public class Cart {
         return amount + "\t" + product.getTitle();
     }
 
+    public void addProduct() {
+        this.amount++;
+    }
+
+    public void removeProduct() {
+        this.amount++;
+    }
 
 }
