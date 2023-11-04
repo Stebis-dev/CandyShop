@@ -31,9 +31,13 @@ public class Cart {
         this.dateCreated = dateCreated;
         this.customer = customer;
         this.product = product;
+        this.amount = 1;
     }
 
-    public Cart(LocalDate dateCreated) {
-        this.dateCreated = dateCreated;
+    @Override
+    public String toString() {
+        return amount + "\t" + product.getTitle();
     }
+
+
 }

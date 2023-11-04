@@ -23,7 +23,7 @@
                                 <ListView fx:id="productList" layoutX="14.0" layoutY="14.0" prefHeight="349.0" prefWidth="276.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="14.0" />
                                 <Button layoutX="300.0" layoutY="14.0" mnemonicParsing="false" onAction="#leaveComment" text="Leave a comment" />
                                 <Button layoutX="547.0" layoutY="14.0" mnemonicParsing="false" onAction="#addToCart" text="Add" />
-                                <ListView fx:id="currentOrder" layoutX="301.0" layoutY="48.0" prefHeight="312.0" prefWidth="285.0" />
+                                <ListView fx:id="userCart" layoutX="301.0" layoutY="48.0" prefHeight="312.0" prefWidth="285.0" />
                                 <Button layoutX="487.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteFromCart" text="Delete" />
                             </children>
                         </AnchorPane>

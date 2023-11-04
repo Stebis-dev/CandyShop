@@ -59,8 +59,10 @@ public class CustomHib extends GenericHib {
             em = getEntityManager();
             em.getTransaction().begin();
 
-            var product = em.find(Product.class, productId);
+            deleteProductFromCart(productId);
+            deleteProductFromWarehouse(productId);
 
+            var product = em.find(Product.class, productId);
             em.remove(product);
             em.getTransaction().commit();
         } catch (NullPointerException e) {
@@ -70,18 +72,59 @@ public class CustomHib extends GenericHib {
         }
     }
 
-    public List<Product> getProductsFromCart(int userId) {
+    public void deleteProductFromCart(int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<Cart> deleteQuery = cb.createCriteriaDelete(Cart.class);
+            Root<Cart> root = deleteQuery.from(Cart.class);
+            Predicate whereClause = cb.equal(root.get("product").get("id"), productId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteProductFromWarehouse(int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+            Predicate whereClause = cb.equal(root.get("product").get("id"), productId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<Cart> getProductsFromCart(int userId) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             CriteriaBuilder cb = em.getCriteriaBuilder();
 
-            CriteriaQuery<Product> query = cb.createQuery(Product.class);
+            CriteriaQuery<Cart> query = cb.createQuery(Cart.class);
             Root<Cart> root = query.from(Cart.class);
-            Join<Cart, Product> cartProductJoin = root.join("product");
-            query.select(cartProductJoin).where(cb.equal(root.get("customer").get("id"), userId));
+            query.select(root).where(cb.equal(root.get("customer").get("id"), userId));
 
-            TypedQuery<Product> typedQuery = em.createQuery(query);
+            TypedQuery<Cart> typedQuery = em.createQuery(query);
 
             return typedQuery.getResultList();
         } catch (NullPointerException e) {
@@ -209,23 +252,39 @@ public class CustomHib extends GenericHib {
         }
     }
 
-//    public void deleteWarehouse(int warehouseId) {
-//        EntityManager em = getEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            var warehouse = em.find(Warehouse.class, warehouseId);
-//            List<Product> products = new ArrayList<>(warehouse.getInStockProducts());
-//
-//            for (Product product : products) {
-//                warehouse.getInStockProducts().remove(product);
-//                deleteProduct(product.getId());
-//            }
-//            em.remove(warehouse);
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (em != null) em.close();
-//        }
-//    }
+    public void deleteWarehouse(int warehouseId) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            var warehouse = em.find(Warehouse.class, warehouseId);
+            deleteInventoryFromWarehouse(warehouseId);
+            em.remove(warehouse);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteInventoryFromWarehouse(int warehouseId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+            Predicate whereClause = cb.equal(root.get("warehouse").get("id"), warehouseId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
 }
