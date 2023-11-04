@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,6 +24,8 @@ public class MainShopController implements Initializable {
     public ListView<Product> productList;
     @FXML
     public ListView<Cart> userCart;
+    @FXML
+    public ListView<Warehouse> orderWarehouseList;
     @FXML
     public Tab usersTab;
     @FXML
@@ -95,6 +98,12 @@ public class MainShopController implements Initializable {
     public TableColumn<ManagerTableGuidelines, String> managerTableMedicalCertificate;
     @FXML
     public TableColumn<ManagerTableGuidelines, String> managerTableEmploymentDate;
+    @FXML
+    public Tab OrderTab;
+    @FXML
+    public ListView<Order> orderList;
+    @FXML
+    public ListView<OrderDetails> orderDetailList;
 
 
     private EntityManagerFactory entityManagerFactory;
@@ -113,6 +122,7 @@ public class MainShopController implements Initializable {
 
         loadProductListInCart();
         loadCurrentCart();
+        loadOrderWarehouseData();
         loadUsers();
         loadManagers();
 
@@ -172,6 +182,9 @@ public class MainShopController implements Initializable {
             } else if (primaryTab.isSelected()) {
                 loadProductListInCart();
                 loadCurrentCart();
+                loadOrderWarehouseData();
+            } else if (OrderTab.isSelected()) {
+                loadOrderList();
             }
         } catch (Exception ignored) {
 
@@ -192,6 +205,31 @@ public class MainShopController implements Initializable {
         }
     }
 
+    public void createOrder() {
+        try {
+            Warehouse selectedWarehouse = orderWarehouseList.getSelectionModel().getSelectedItem();
+            Order order = new Order((Customer) currentUser, selectedWarehouse, "Processing");
+            customHib.create(order);
+            List<Cart> userCartList = customHib.getUserCarts(((Customer) currentUser).getId());
+            OrderDetails newOrderDetails;
+
+            for (Cart cart : userCartList) {
+                newOrderDetails = new OrderDetails(order, cart.getProduct(), cart.getAmount());
+                customHib.create(newOrderDetails);
+                customHib.delete(Cart.class, cart.getId());
+            }
+            loadCurrentCart();
+            loadOrderWarehouseData();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void loadOrderWarehouseData() {
+        orderWarehouseList.getItems().clear();
+        orderWarehouseList.getItems().addAll(customHib.getAllRecords(Warehouse.class));
+    }
+
     public void addToCart() {
         Product selectProduct = null;
         try {
@@ -203,8 +241,10 @@ public class MainShopController implements Initializable {
                 customHib.update(customersCartWithProduct);
             }
         } catch (Exception ignored) {
-            Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), selectProduct);
-            customHib.create(cart);
+            if (selectProduct != null) {
+                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), selectProduct);
+                customHib.create(cart);
+            }
         } finally {
             loadProductListInCart();
             loadCurrentCart();
@@ -550,5 +590,21 @@ public class MainShopController implements Initializable {
         }
     }
 
+    //----------------------Order section functionality----------------------//
 
+    public void loadOrderList() {
+        orderList.getItems().clear();
+        orderList.getItems().addAll(customHib.getAllRecords(Order.class));
+        orderDetailList.getItems().clear();
+    }
+
+    public void loadOrderDetailList() {
+        try {
+            Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
+            orderDetailList.getItems().clear();
+            orderDetailList.getItems().addAll(customHib.getOrderDetails(selectedOrder.getId()));
+        } catch (Exception e) {
+
+        }
+    }
 }

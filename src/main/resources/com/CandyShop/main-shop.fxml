@@ -21,10 +21,12 @@
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <ListView fx:id="productList" layoutX="14.0" layoutY="14.0" prefHeight="349.0" prefWidth="276.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="14.0" />
-                                <Button layoutX="300.0" layoutY="14.0" mnemonicParsing="false" onAction="#leaveComment" text="Leave a comment" />
+                                <Button layoutX="301.0" layoutY="335.0" mnemonicParsing="false" onAction="#leaveComment" prefHeight="13.0" prefWidth="110.0" text="Leave a comment" />
                                 <Button layoutX="547.0" layoutY="14.0" mnemonicParsing="false" onAction="#addToCart" text="Add" />
-                                <ListView fx:id="userCart" layoutX="301.0" layoutY="48.0" prefHeight="312.0" prefWidth="285.0" />
-                                <Button layoutX="487.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteFromCart" text="Delete" />
+                                <ListView fx:id="userCart" layoutX="301.0" layoutY="47.0" prefHeight="190.0" prefWidth="286.0" />
+                                <Button layoutX="489.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteFromCart" text="Delete" />
+                        <Button layoutX="506.0" layoutY="335.0" mnemonicParsing="false" onAction="#createOrder" text="Create order" />
+                        <ListView fx:id="orderWarehouseList" layoutX="301.0" layoutY="237.0" prefHeight="91.0" prefWidth="285.0" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -110,6 +112,16 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+            <Tab fx:id="OrderTab" onSelectionChanged="#loadTabValues" text="Order">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="orderDetailList" layoutX="342.0" layoutY="12.0" prefHeight="347.0" prefWidth="244.0" />
+                        <ListView fx:id="orderList" layoutX="14.0" layoutY="10.0" onMouseClicked="#loadOrderDetailList" prefHeight="347.0" prefWidth="244.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>
