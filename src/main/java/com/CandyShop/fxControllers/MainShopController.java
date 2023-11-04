@@ -36,7 +36,7 @@ public class MainShopController implements Initializable {
     @FXML
     public TextField titleWarehouseField;
     @FXML
-    public ListView<Product> assignedProducts;
+    public ListView<WarehouseInventory> assignedProducts;
     @FXML
     public ListView<Product> notAssignedProducts;
     @FXML
@@ -409,26 +409,33 @@ public class MainShopController implements Initializable {
         }
     }
 
-    public void addProductToWarehouse() {
+    public void addProductToInventory() {
         try {
             Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
             Product selectedProduct = notAssignedProducts.getSelectionModel().getSelectedItem();
             WarehouseInventory warehouseInventory = new WarehouseInventory(selectedWarehouse, selectedProduct, Integer.parseInt(productAmount.getText()));
             customHib.create(warehouseInventory);
             loadWarehouseData();
-            loadWarehouseList();
         } catch (NullPointerException ignored) {
 
         }
     }
 
-    public void removeProductFromWarehouse() {
+    public void removeProductFromInventory() {
         try {
-            Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
-            Product selectedProduct = assignedProducts.getSelectionModel().getSelectedItem();
-            System.out.println(selectedProduct);
-            customHib.deleteProductFromWarehouse(selectedWarehouse.getId(), selectedProduct.getId());
-            loadWarehouseList();
+            WarehouseInventory selectedWarehouseInventory = assignedProducts.getSelectionModel().getSelectedItem();
+            customHib.delete(WarehouseInventory.class, selectedWarehouseInventory.getId());
+            loadWarehouseData();
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void updateInventory() {
+        try {
+            WarehouseInventory selectedWarehouseInventory = assignedProducts.getSelectionModel().getSelectedItem();
+            selectedWarehouseInventory.setAmount(Integer.parseInt(productAmount.getText()));
+            customHib.update(selectedWarehouseInventory);
             loadWarehouseData();
         } catch (Exception ignored) {
 
@@ -467,15 +474,20 @@ public class MainShopController implements Initializable {
             Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
             titleWarehouseField.setText(selectedWarehouse.getTitle());
             addressWarehouseField.setText(selectedWarehouse.getAddress());
+            productAmount.setText("");
 
             assignedProducts.getItems().clear();
-            List<Product> warehouseProducts = customHib.getProductsFromWarehouse(selectedWarehouse.getId());
-//        for (Product product : warehouseProducts) {
-//            System.out.println(product.getTitle());
-//        }
+            List<WarehouseInventory> warehouseProducts = customHib.getWarehouseInventory(selectedWarehouse.getId());
             assignedProducts.getItems().addAll(warehouseProducts);
 
         } catch (Exception ignored) {
+        }
+    }
+
+    public void loadWarehouseInventoryData() {
+        WarehouseInventory selectedWarehouseInventory = assignedProducts.getSelectionModel().getSelectedItem();
+        if (selectedWarehouseInventory != null) {
+            productAmount.setText(String.valueOf(selectedWarehouseInventory.getAmount()));
         }
     }
 

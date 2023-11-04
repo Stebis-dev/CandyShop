@@ -1,8 +1,8 @@
 package com.CandyShop.fxControllers;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.hibernateControllers.GenericHib;
-import com.CandyShop.hibernateControllers.UserHib;
 import com.CandyShop.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -28,7 +28,7 @@ public class LoginController implements Initializable {
     public PasswordField passwordField;
 
     private EntityManagerFactory entityManagerFactory;
-    private UserHib userHib;
+    private CustomHib customHib;
 
 
     public void registerNewUser() throws IOException {
@@ -50,8 +50,8 @@ public class LoginController implements Initializable {
     }
 
     public void validateAndConnect() throws IOException {
-        userHib = new UserHib(entityManagerFactory);
-        User user = userHib.getUserByCredentials(loginField.getText(), passwordField.getText());
+        customHib = new CustomHib(entityManagerFactory);
+        User user = customHib.getUserByCredentials(loginField.getText(), passwordField.getText());
         //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
         if (user != null) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));

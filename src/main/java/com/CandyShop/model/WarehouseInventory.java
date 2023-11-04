@@ -30,4 +30,9 @@ public class WarehouseInventory {
         this.product = product;
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return amount + "\t" + product.getTitle();
+    }
 }
