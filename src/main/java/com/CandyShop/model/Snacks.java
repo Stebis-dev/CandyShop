@@ -21,10 +21,4 @@ public class Snacks extends Product {
         this.weight = weight;
         this.chemicalContents = chemicalContents;
     }
-
-    public Snacks(String title, String description, String manufacturer, Warehouse warehouse, double weight, String chemicalContents) {
-        super(title, description, manufacturer, warehouse);
-        this.weight = weight;
-        this.chemicalContents = chemicalContents;
-    }
 }

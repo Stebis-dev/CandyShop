@@ -6,45 +6,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Cart {
+@Table(name = "order_details")
+public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate dateCreated;
 
     @OneToOne
-    private Customer customer;
+    private Order order;
     @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     private int amount;
 
-    public Cart(LocalDate dateCreated, Customer customer, Product product) {
-        this.dateCreated = dateCreated;
-        this.customer = customer;
+    public OrderDetails(Order order, Product product, int amount) {
+        this.order = order;
         this.product = product;
-        this.amount = 1;
+        this.amount = amount;
     }
 
     @Override
     public String toString() {
         return amount + "\t" + product.getTitle();
     }
-
-    public void addProduct() {
-        this.amount++;
-    }
-
-    public void removeProduct() {
-        this.amount++;
-    }
-
 }

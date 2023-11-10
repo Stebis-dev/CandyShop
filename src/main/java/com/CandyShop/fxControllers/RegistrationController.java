@@ -2,8 +2,6 @@ package com.CandyShop.fxControllers;
 
 import com.CandyShop.StartGui;
 import com.CandyShop.hibernateControllers.CustomHib;
-import com.CandyShop.hibernateControllers.UserHib;
-import com.CandyShop.model.Cart;
 import com.CandyShop.model.Customer;
 import com.CandyShop.model.Manager;
 import com.CandyShop.model.User;
@@ -18,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class RegistrationController implements Initializable {
@@ -55,7 +52,6 @@ public class RegistrationController implements Initializable {
     public CheckBox isAdminCheck;
 
     private EntityManagerFactory entityManagerFactory;
-    private UserHib userHib;
     private CustomHib customHib;
 
     public void setData(EntityManagerFactory entityManagerFactory, boolean isAdministrator) {
@@ -100,14 +96,10 @@ public class RegistrationController implements Initializable {
                     !surnameField.getText().isEmpty() &&
                     !birthDateField.getValue().toString().isEmpty()) {
 
-                userHib = new UserHib(entityManagerFactory);
                 customHib = new CustomHib(entityManagerFactory);
                 if (customerCheckbox.isSelected()) {
                     if (!addressField.getText().isEmpty() &&
                             !cardNoField.getText().isEmpty()) {
-
-                        Cart cart = new Cart(LocalDate.now());
-                        customHib.create(cart);
                         User user = new Customer(
                                 loginField.getText(),
                                 passwordField.getText(),
@@ -115,8 +107,8 @@ public class RegistrationController implements Initializable {
                                 nameField.getText(),
                                 surnameField.getText(),
                                 addressField.getText(),
-                                cardNoField.getText(), cart);
-                        userHib.createUser(user);
+                                cardNoField.getText());
+                        customHib.createUser(user);
                         returnToLogin();
                     } else {
                         JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,
@@ -137,7 +129,7 @@ public class RegistrationController implements Initializable {
                                 medCertificateField.getText(),
                                 employmentDateField.getValue(),
                                 isAdminCheck.isSelected());
-                        userHib.createUser(user);
+                        customHib.createUser(user);
                         returnToLogin();
                     } else {
                         JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,

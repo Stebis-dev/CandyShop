@@ -24,10 +24,6 @@ public class Product implements Serializable {
     String description;
     String manufacturer;
 
-    @ManyToOne
-    Warehouse warehouse;
-    @ManyToOne
-    Cart cart;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -44,12 +40,12 @@ public class Product implements Serializable {
         this.manufacturer = manufacturer;
     }
 
-    public Product(String title, String description, String manufacturer, Warehouse warehouse) {
-        this.title = title;
-        this.description = description;
-        this.manufacturer = manufacturer;
-        this.warehouse = warehouse;
-    }
+//    public Product(String title, String description, String manufacturer, Warehouse warehouse) {
+//        this.title = title;
+//        this.description = description;
+//        this.manufacturer = manufacturer;
+//        this.warehouse = warehouse;
+//    }
 
     @Override
     public String toString() {

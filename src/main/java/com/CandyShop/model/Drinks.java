@@ -17,15 +17,8 @@ public class Drinks extends Product {
     private String chemicalContents;
 
 
-    public Drinks(String title, String description, double contentVolume, String chemicalContents) {
-        super(title, description);
-        this.contentVolume = contentVolume;
-        this.chemicalContents = chemicalContents;
-
-    }
-
-    public Drinks(String title, String description, String manufacturer, Warehouse warehouse, double contentVolume, String chemicalContents) {
-        super(title, description, manufacturer, warehouse);
+    public Drinks(String title, String description, String manufacturer, double contentVolume, String chemicalContents) {
+        super(title, description, manufacturer);
         this.contentVolume = contentVolume;
         this.chemicalContents = chemicalContents;
 

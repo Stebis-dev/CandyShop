@@ -6,45 +6,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Cart {
+@Entity
+@Table(name = "Warehouse_Inventory")
+public class WarehouseInventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate dateCreated;
 
     @OneToOne
-    private Customer customer;
+    private Warehouse warehouse;
+
     @OneToOne
-    @JoinColumn(name = "product_id")
     private Product product;
 
     private int amount;
 
-    public Cart(LocalDate dateCreated, Customer customer, Product product) {
-        this.dateCreated = dateCreated;
-        this.customer = customer;
+    public WarehouseInventory(Warehouse warehouse, Product product, int amount) {
+        this.warehouse = warehouse;
         this.product = product;
-        this.amount = 1;
+        this.amount = amount;
     }
 
     @Override
     public String toString() {
         return amount + "\t" + product.getTitle();
     }
-
-    public void addProduct() {
-        this.amount++;
-    }
-
-    public void removeProduct() {
-        this.amount++;
-    }
-
 }

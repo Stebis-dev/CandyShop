@@ -1,15 +1,10 @@
 package com.CandyShop.hibernateControllers;
 
-import com.CandyShop.model.Comment;
-import com.CandyShop.model.Product;
-import com.CandyShop.model.User;
-import com.CandyShop.model.Warehouse;
+import com.CandyShop.model.*;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomHib extends GenericHib {
@@ -20,14 +15,19 @@ public class CustomHib extends GenericHib {
     public User getUserByCredentials(String login, String password) {
         EntityManager em = null;
         try {
+            em = getEntityManager();
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<User> query = cb.createQuery(User.class);
             Root<User> root = query.from(User.class);
-            query.select(root).where(cb.and(cb.like(root.get("login"), login), cb.like(root.get("password"), password)));
-            Query q;
+            query.select(root).where(cb.and(cb.like(root.get("login"), login)));
+            Query q = em.createQuery(query);
 
-            q = em.createQuery(query);
-            return (User) q.getSingleResult();
+            User user = (User) q.getSingleResult();
+
+            if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+                return user;
+            }
+            return null;
         } catch (NoResultException e) {
             return null;
         } finally {
@@ -35,74 +35,227 @@ public class CustomHib extends GenericHib {
         }
     }
 
-    public void deleteProduct(int productId) {
-        EntityManager em = getEntityManager();
+    public void createUser(User user) {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             em.getTransaction().begin();
-            var product = em.find(Product.class, productId);
-            var warehouse = product.getWarehouse();
-            var cart = product.getCart();
 
-            if (warehouse != null) {
-                warehouse.getInStockProducts().remove(product);
-                em.merge(warehouse);
-            }
-            if (cart != null) {
-                cart.getItemsInCart().remove(product);
-                em.merge(cart);
-            }
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 
-            em.remove(product);
+            em.persist(user);
             em.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
         }
     }
 
-    public List<Product> getProductsByCartId(int cartId) {
-        EntityManager em = getEntityManager();
+    public void deleteProduct(int productId) {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            deleteProductFromCart(productId);
+            deleteProductFromWarehouse(productId);
+
+            var product = em.find(Product.class, productId);
+            em.remove(product);
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteProductFromCart(int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
             CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Product> query = cb.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+            CriteriaDelete<Cart> deleteQuery = cb.createCriteriaDelete(Cart.class);
+            Root<Cart> root = deleteQuery.from(Cart.class);
+            Predicate whereClause = cb.equal(root.get("product").get("id"), productId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
 
-            query.select(root).where(cb.equal(root.get("cart").get("id"), cartId));
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
 
-            TypedQuery<Product> typedQuery = em.createQuery(query);
+    public void deleteProductFromWarehouse(int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+            Predicate whereClause = cb.equal(root.get("product").get("id"), productId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<Cart> getUserCarts(int userId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Cart> query = cb.createQuery(Cart.class);
+            Root<Cart> root = query.from(Cart.class);
+            query.select(root).where(cb.equal(root.get("customer").get("id"), userId));
+
+            TypedQuery<Cart> typedQuery = em.createQuery(query);
 
             return typedQuery.getResultList();
-
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             return null;
         } finally {
             if (em != null) em.close();
         }
     }
 
-    public List<Product> getAvailableProducts() {
-        EntityManager em = getEntityManager();
+    public Cart getUserCartProduct(int userId, int productId) {
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Product> query = cb.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
 
-            query.select(root).where(cb.isNull(root.get("cart").get("id")));
+            CriteriaQuery<Cart> query = cb.createQuery(Cart.class);
+            Root<Cart> root = query.from(Cart.class);
+            query.select(root).where(cb.and(
+                    cb.equal(root.get("customer").get("id"), userId),
+                    cb.equal(root.get("product").get("id"), productId))
+            );
 
-            TypedQuery<Product> typedQuery = em.createQuery(query);
-
-            return typedQuery.getResultList();
-
-        } catch (Exception e) {
+            TypedQuery<Cart> typedQuery = em.createQuery(query);
+            return typedQuery.getSingleResult();
+        } catch (NullPointerException e) {
             return null;
         } finally {
             if (em != null) em.close();
         }
     }
+
+//    public List<Product> getProductsFromWarehouse(int warehouseId) {
+//        EntityManager em = null;
+//        try {
+//            em = getEntityManager();
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//
+//            CriteriaQuery<Product> query = cb.createQuery(Product.class);
+//            Root<WarehouseInventory> root = query.from(WarehouseInventory.class);
+//            Join<WarehouseInventory, Product> cartProductJoin = root.join("product");
+//            query.select(cartProductJoin).where(cb.equal(root.get("warehouse").get("id"), warehouseId));
+//
+//            TypedQuery<Product> typedQuery = em.createQuery(query);
+//
+//            return typedQuery.getResultList();
+//        } catch (NullPointerException e) {
+//            return null;
+//        } finally {
+//            if (em != null) em.close();
+//        }
+//    }
+
+    public List<WarehouseInventory> getWarehouseInventory(int warehouseId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<WarehouseInventory> query = cb.createQuery(WarehouseInventory.class);
+            Root<WarehouseInventory> root = query.from(WarehouseInventory.class);
+            query.select(root).where(cb.equal(root.get("warehouse").get("id"), warehouseId));
+
+            TypedQuery<WarehouseInventory> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+//    public void deleteProductFromCart(int userId, int productId) {
+//        EntityManager em = null;
+//        try {
+//            em = getEntityManager();
+//            em.getTransaction().begin();
+//
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaDelete<Cart> deleteQuery = cb.createCriteriaDelete(Cart.class);
+//            Root<Cart> root = deleteQuery.from(Cart.class);
+//
+//            Predicate whereClause = cb.and(
+//                    cb.equal(root.get("customer").get("id"), userId),
+//                    cb.equal(root.get("product").get("id"), productId)
+//            );
+//
+//            deleteQuery.where(whereClause);
+//
+//            em.createQuery(deleteQuery).executeUpdate();
+//
+//            em.getTransaction().commit();
+//        } catch (Exception e) {
+//            System.out.println("Null value encountered");
+//        } finally {
+//            if (em != null) em.close();
+//        }
+//    }
+//
+//    public void deleteProductFromWarehouse(int warehouseId, int productId) {
+//        EntityManager em = null;
+//        try {
+//            em = getEntityManager();
+//            em.getTransaction().begin();
+//
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+//            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+//
+//            Predicate whereClause = cb.and(
+//                    cb.equal(root.get("warehouse").get("id"), warehouseId),
+//                    cb.equal(root.get("product").get("id"), productId)
+//            );
+//
+//            deleteQuery.where(whereClause);
+//
+//            em.createQuery(deleteQuery).executeUpdate();
+//
+//            em.getTransaction().commit();
+//        } catch (NullPointerException e) {
+//            System.out.println("Null value encountered");
+//        } finally {
+//            if (em != null) em.close();
+//        }
+//    }
 
     public void deleteComment(int commentId) {
-        EntityManager em = getEntityManager();
+        EntityManager em = null;
         try {
+            em = getEntityManager();
             em.getTransaction().begin();
+
             var comment = em.find(Comment.class, commentId);
             var product = comment.getProduct();
 
@@ -114,7 +267,9 @@ public class CustomHib extends GenericHib {
             em.remove(comment);
             em.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
         }
     }
 
@@ -123,16 +278,52 @@ public class CustomHib extends GenericHib {
         try {
             em.getTransaction().begin();
             var warehouse = em.find(Warehouse.class, warehouseId);
-            List<Product> products = new ArrayList<>(warehouse.getInStockProducts());
-
-            for (Product product : products) {
-                warehouse.getInStockProducts().remove(product);
-                deleteProduct(product.getId());
-            }
+            deleteInventoryFromWarehouse(warehouseId);
             em.remove(warehouse);
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteInventoryFromWarehouse(int warehouseId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
+            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
+            Predicate whereClause = cb.equal(root.get("warehouse").get("id"), warehouseId);
+            deleteQuery.where(whereClause);
+            em.createQuery(deleteQuery).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<OrderDetails> getOrderDetails(int orderId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<OrderDetails> query = cb.createQuery(OrderDetails.class);
+            Root<OrderDetails> root = query.from(OrderDetails.class);
+            query.select(root).where(cb.equal(root.get("order").get("id"), orderId));
+
+            TypedQuery<OrderDetails> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
         } finally {
             if (em != null) em.close();
         }
