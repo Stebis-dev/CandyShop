@@ -7,27 +7,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainshop.ProductController">
+<AnchorPane prefHeight="565.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainshop.ProductController">
 
-    <ListView fx:id="productListManager" layoutX="16.0" layoutY="14.0" onMouseClicked="#loadProductData"
-              prefHeight="312.0" prefWidth="244.0"/>
-    <TextField fx:id="productTitleField" layoutX="276.0" layoutY="14.0" prefHeight="26.0" prefWidth="305.0"
-               promptText="Title"/>
-    <TextArea fx:id="productDescriptionField" layoutX="276.0" layoutY="159.0" prefHeight="54.0" prefWidth="306.0"
-              promptText="Description"/>
-    <TextField fx:id="productManufacturerField" layoutX="277.0" layoutY="50.0" prefHeight="26.0" prefWidth="305.0"
-               promptText="Manufacturer"/>
-    <ComboBox fx:id="productType" layoutX="276.0" layoutY="86.0" onAction="#enableProductFields" prefHeight="26.0"
-              prefWidth="306.0" promptText="Product Type"/>
-    <TextField fx:id="weightField" layoutX="277.0" layoutY="125.0" prefHeight="26.0" prefWidth="305.0"
-               promptText="Weight"/>
-    <TextArea fx:id="chemicalDescriptionField" layoutX="277.0" layoutY="226.0" prefHeight="98.0" prefWidth="306.0"
-              promptText="Chemical description"/>
-    <Button layoutX="509.0" layoutY="339.0" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="26.0"
-            prefWidth="73.0" text="Add new"/>
-    <Button layoutX="16.0" layoutY="339.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="26.0"
-            prefWidth="58.0" text="Update"/>
-    <Button layoutX="84.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="26.0"
-            prefWidth="58.0" text="Delete"/>
+    <ListView fx:id="productListManager" layoutX="16.0" layoutY="14.0" onMouseClicked="#loadProductData" prefHeight="312.0" prefWidth="244.0" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="14.0" />
+    <TextField fx:id="productTitleField" layoutX="276.0" layoutY="14.0" prefHeight="26.0" prefWidth="305.0" promptText="Title" AnchorPane.rightAnchor="18.399999999999977" AnchorPane.topAnchor="13.999999999999979" />
+    <TextArea fx:id="productDescriptionField" layoutX="276.0" layoutY="159.0" prefHeight="54.0" prefWidth="306.0" promptText="Description" AnchorPane.rightAnchor="17.600000000000023" AnchorPane.topAnchor="159.0" />
+    <TextField fx:id="productManufacturerField" layoutX="277.0" layoutY="50.0" prefHeight="26.0" prefWidth="305.0" promptText="Manufacturer" AnchorPane.rightAnchor="17.399999999999977" AnchorPane.topAnchor="49.99999999999998" />
+    <ComboBox fx:id="productType" layoutX="276.0" layoutY="86.0" onAction="#enableProductFields" prefHeight="26.0" prefWidth="306.0" promptText="Product Type" AnchorPane.rightAnchor="17.600000000000023" AnchorPane.topAnchor="85.99999999999997" />
+    <TextField fx:id="weightField" layoutX="277.0" layoutY="125.0" prefHeight="26.0" prefWidth="305.0" promptText="Weight" AnchorPane.rightAnchor="17.399999999999977" AnchorPane.topAnchor="125.0" />
+    <TextArea fx:id="chemicalDescriptionField" layoutX="276.0" layoutY="222.0" prefHeight="102.0" prefWidth="306.0" promptText="Chemical description" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="222.0" />
+    <Button layoutX="509.0" layoutY="339.0" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="26.0" prefWidth="73.0" text="Add new" AnchorPane.bottomAnchor="34.6" AnchorPane.rightAnchor="17.400000000000006" />
+    <Button layoutX="16.0" layoutY="339.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="26.0" prefWidth="58.0" text="Update" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="16.0" />
+    <Button layoutX="84.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="26.0" prefWidth="58.0" text="Delete" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="84.0" />
 </AnchorPane>

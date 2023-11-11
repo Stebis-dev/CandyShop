@@ -16,9 +16,10 @@ import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CartController {
+public class CartController implements CartHandler {
 
     @FXML
     public ListView<Product> productList;
@@ -28,9 +29,12 @@ public class CartController {
     @FXML
     public ListView<Warehouse> orderWarehouseList;
 
+    private static final int NUM_CARDS_PER_ROW = 4;
+    private static final double CARD_SPACING = 10;
     @FXML
     private ScrollPane productPane;
     private FlowPane productContainer;
+    private List<ProductCardController> cardControllers = new ArrayList<>();
 
     public User currentUser;
 
@@ -46,27 +50,16 @@ public class CartController {
     }
 
     public void loadData() {
-        loadProductList();
         loadCartList();
         loadWarehouseList();
+        loadCards();
+    }
 
-//        productcard
-        productContainer = new FlowPane(Orientation.HORIZONTAL, 10, 10);
-        productContainer.setAlignment(Pos.TOP_LEFT);
-//        productContainer.setPrefWrapLength(productPane.getPrefWidth());
-
-        productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-            // Adjust the preferred wrap length of the FlowPane based on the new width
-            double width = newValue.getWidth();
-            productContainer.setPrefWrapLength(width);
-        });
-
-        // Load products and create cards for each
-        for (Product product : customHib.getAllRecords(Product.class)) {
-            addProductCard(product);
+    private void adjustCardSizes(double containerWidth) {
+        double cardWidth = (containerWidth - (CARD_SPACING * (NUM_CARDS_PER_ROW + 1))) / NUM_CARDS_PER_ROW;
+        for (ProductCardController card : cardControllers) {
+            card.setCardSize(cardWidth);
         }
-
-        productPane.setContent(productContainer);
     }
 
     private void addProductCard(Product product) {
@@ -75,12 +68,31 @@ public class CartController {
             Node card = loader.load();
             ProductCardController controller = loader.getController();
             controller.setProduct(product);
+            controller.setCartHandler(this);
+            cardControllers.add(controller);
 
             productContainer.getChildren().add(card);
         } catch (IOException ignored) {
         }
     }
 
+    public void addToCart(Product product) {
+        try {
+            Cart customersCartWithProduct = customHib.getUserCartProduct(currentUser.getId(), product.getId());
+
+            if (customersCartWithProduct != null) {
+                customersCartWithProduct.addProduct();
+                customHib.update(customersCartWithProduct);
+            }
+        } catch (Exception ignored) {
+            if (product != null) {
+                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product);
+                customHib.create(cart);
+            }
+        } finally {
+            loadCartList();
+        }
+    }
 
     public void addToCart() {
         Product selectProduct = null;
@@ -98,7 +110,6 @@ public class CartController {
                 customHib.create(cart);
             }
         } finally {
-            loadProductList();
             loadCartList();
         }
     }
@@ -107,7 +118,6 @@ public class CartController {
         try {
             Cart selectCart = userCart.getSelectionModel().getSelectedItem();
             customHib.delete(Cart.class, selectCart.getId());
-            loadProductList();
             loadCartList();
         } catch (NullPointerException ignored) {
         }
@@ -137,7 +147,29 @@ public class CartController {
         try {
             orderWarehouseList.getItems().clear();
             orderWarehouseList.getItems().addAll(customHib.getAllRecords(Warehouse.class));
+
         } catch (Exception ignored) {
+        }
+    }
+
+    private void loadCards() {
+        try {
+            productContainer = new FlowPane(Orientation.HORIZONTAL, CARD_SPACING, CARD_SPACING);
+            productContainer.setAlignment(Pos.TOP_LEFT);
+
+            productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                double width = newValue.getWidth();
+                productContainer.setPrefWrapLength(width);
+                adjustCardSizes(productPane.getWidth());
+            });
+
+            for (Product product : customHib.getAllRecords(Product.class)) {
+                addProductCard(product);
+            }
+
+
+            productPane.setContent(productContainer);
+        } catch (NullPointerException ignored) {
         }
     }
 
@@ -145,14 +177,6 @@ public class CartController {
         try {
             userCart.getItems().clear();
             userCart.getItems().addAll(customHib.getUserCarts(currentUser.getId()));
-        } catch (Exception ignored) {
-        }
-    }
-
-    private void loadProductList() {
-        try {
-            productList.getItems().clear();
-            productList.getItems().addAll(customHib.getAllRecords(Product.class));
         } catch (Exception ignored) {
         }
     }

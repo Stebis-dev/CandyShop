@@ -23,6 +23,8 @@ public class Product implements Serializable {
     String title;
     String description;
     String manufacturer;
+    byte[] image;
+    int price;
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

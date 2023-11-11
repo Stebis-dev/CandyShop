@@ -28,19 +28,20 @@ public class ProductController {
     private CustomHib customHib;
 
 
-//    public ProductController() {
-////        loadProductListManager();
-////        List<Warehouse> record = customHib.getAllRecords(Warehouse.class);
-////        productTitleField.clear();
-////        productManufacturerField.clear();
-////        weightField.clear();
-////        productDescriptionField.clear();
-////        chemicalDescriptionField.clear();
-//    }
-
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         customHib = new CustomHib(entityManagerFactory);
 
+    }
+
+    public void loadData() {
+        loadProductListManager();
+        loadProductData();
+        loadProductType();
+    }
+
+    public void loadProductType() {
+        productType.getItems().clear();
+        productType.getItems().addAll(ProductType.values());
     }
 
     public void enableProductFields() {
@@ -156,4 +157,6 @@ public class ProductController {
 
         }
     }
+
+
 }

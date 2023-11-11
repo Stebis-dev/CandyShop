@@ -87,6 +87,7 @@ public class MainShopController implements Initializable {
                 cartSectionController.loadData();
             } else if (productsTab.isSelected()) {
                 productSectionController.setEntityManagerFactory(entityManagerFactory);
+                productSectionController.loadData();
             } else if (usersTab.isSelected()) {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (warehouseTab.isSelected()) {
@@ -96,7 +97,7 @@ public class MainShopController implements Initializable {
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
             }
-        } catch (Exception ignored) {
+        } catch (NullPointerException ignored) {
 
         }
     }
