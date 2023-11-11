@@ -1,9 +1,12 @@
-package com.CandyShop.fxControllers;
+package com.CandyShop.controllers.login;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.controllers.mainshop.MainShopController;
+import com.CandyShop.controllers.registration.RegistrationController;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.hibernateControllers.GenericHib;
 import com.CandyShop.model.User;
+import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import javafx.fxml.FXML;
@@ -64,7 +67,7 @@ public class LoginController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Login INFO", "Wrong data", "Please check credentials, no such user");
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "login INFO", "Wrong data", "Please check credentials, no such user");
         }
     }
 

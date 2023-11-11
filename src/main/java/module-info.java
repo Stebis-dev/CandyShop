@@ -12,8 +12,16 @@ module com.kursinis.prif4kursinis {
     exports com.CandyShop;
     opens com.CandyShop.model to javafx.fxml, org.hibernate.orm.core;
     exports com.CandyShop.model;
-    opens com.CandyShop.fxControllers to javafx.fxml;
-    exports com.CandyShop.fxControllers to javafx.fxml;
-    exports com.CandyShop.fxControllers.tableViewGuidelines;
-    opens com.CandyShop.fxControllers.tableViewGuidelines to javafx.fxml, org.hibernate.orm.core;
+    exports com.CandyShop.controllers.mainshop.tableViewGuidelines;
+    opens com.CandyShop.controllers.mainshop.tableViewGuidelines to javafx.fxml, org.hibernate.orm.core;
+    exports com.CandyShop.utils to javafx.fxml;
+    opens com.CandyShop.utils to javafx.fxml;
+    exports com.CandyShop.controllers.mainshop to javafx.fxml;
+    opens com.CandyShop.controllers.mainshop to javafx.fxml;
+    exports com.CandyShop.controllers.login to javafx.fxml;
+    opens com.CandyShop.controllers.login to javafx.fxml;
+    exports com.CandyShop.controllers.registration to javafx.fxml;
+    opens com.CandyShop.controllers.registration to javafx.fxml;
+    exports com.CandyShop.controllers.common to javafx.fxml;
+    opens com.CandyShop.controllers.common to javafx.fxml;
 }

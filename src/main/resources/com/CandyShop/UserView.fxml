@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.CandyShop.controllers.mainshop.UserController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <TableView fx:id="customerTable" layoutX="14.0" layoutY="14.0" prefHeight="178.0" prefWidth="578.0">
+        <columns>
+            <TableColumn fx:id="customerTableName" prefWidth="126.4000244140625" text="Name"/>
+            <TableColumn fx:id="customerTableSurname" prefWidth="116.0" text="Surname"/>
+            <TableColumn fx:id="customerTableBirthdate" prefWidth="82.4000244140625" text="Birth date"/>
+            <TableColumn fx:id="customerTableAddress" prefWidth="117.5999755859375" text="Address"/>
+            <TableColumn fx:id="customerTableCardNumber" prefWidth="133.60001220703123" text="Card number"/>
+        </columns>
+    </TableView>
+    <TableView fx:id="managerTable" layoutX="14.0" layoutY="199.0" prefHeight="158.0" prefWidth="578.0">
+        <columns>
+            <TableColumn fx:id="managerEmployeeId" prefWidth="81.5999755859375" text="Employee Id"/>
+            <TableColumn fx:id="managerTableName" prefWidth="91.20001220703125" text="Name"/>
+            <TableColumn fx:id="managerTableSurname" prefWidth="102.39996337890625" text="Surname"/>
+            <TableColumn fx:id="managerBirthdate" prefWidth="76.0" text="Birth date"/>
+            <TableColumn fx:id="managerTableMedicalCertificate" prefWidth="112.79998779296875"
+                         text="Medical certificate"/>
+            <TableColumn fx:id="managerTableEmploymentDate" prefWidth="114.4000244140625" text="Employment Date"/>
+        </columns>
+    </TableView>
+
+</AnchorPane>

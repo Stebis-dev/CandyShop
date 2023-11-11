@@ -1,4 +1,4 @@
-package com.CandyShop.fxControllers.tableViewGuidelines;
+package com.CandyShop.controllers.mainshop.tableViewGuidelines;
 
 import com.CandyShop.model.Manager;
 import javafx.beans.property.SimpleStringProperty;
