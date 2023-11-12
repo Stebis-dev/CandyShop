@@ -4,6 +4,7 @@ import com.CandyShop.controllers.mainshop.CartHandler;
 import com.CandyShop.model.Product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -23,6 +24,9 @@ public class ProductCardController {
         this.product = product;
         productName.setText(product.getTitle());
         productDescription.setText(product.getDescription());
+        if (product.getImagePath() != null) {
+            productImage.setImage(new Image(product.getImagePath()));
+        }
     }
 
     public void setCartHandler(CartHandler cartHandler) {

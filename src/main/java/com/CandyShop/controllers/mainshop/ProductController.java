@@ -8,6 +8,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class ProductController {
     @FXML
@@ -24,13 +33,15 @@ public class ProductController {
     public TextArea chemicalDescriptionField;
     @FXML
     public TextField productManufacturerField;
-
+    @FXML
+    public ImageView imagePreview;
+    public String imagePath;
     private CustomHib customHib;
 
+    public static String IMAGEPATH = "com/CandyShop/images";
 
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         customHib = new CustomHib(entityManagerFactory);
-
     }
 
     public void loadData() {
@@ -39,10 +50,6 @@ public class ProductController {
         loadProductType();
     }
 
-    public void loadProductType() {
-        productType.getItems().clear();
-        productType.getItems().addAll(ProductType.values());
-    }
 
     public void enableProductFields() {
         if (productType.getSelectionModel().getSelectedItem() == ProductType.CANDY) {
@@ -54,12 +61,8 @@ public class ProductController {
         }
     }
 
-    private void loadProductListManager() {
-        productListManager.getItems().clear();
-        productListManager.getItems().addAll(customHib.getAllRecords(Product.class));
-    }
 
-    public void addNewProduct() {
+    public void addNewProduct() throws IOException {
 
         Product product = new Product();
         if (productType.getSelectionModel().getSelectedItem() == ProductType.CANDY) {
@@ -84,6 +87,10 @@ public class ProductController {
                     Double.parseDouble(weightField.getText()),
                     chemicalDescriptionField.getText());
         }
+
+//        product.setImagePath(Files.copy(Paths.get(imagePreview.getImage().getUrl()), Paths.get(IMAGEPATH), StandardCopyOption.COPY_ATTRIBUTES).toString());
+        product.setImagePath(imagePath);
+
         customHib.create(product);
         loadProductListManager();
     }
@@ -107,6 +114,9 @@ public class ProductController {
                 ((Snacks) product).setWeight(Double.parseDouble(weightField.getText()));
                 ((Snacks) product).setChemicalContents(chemicalDescriptionField.getText());
             }
+//            Files.copy(Paths.get(imagePreview.getImage().getUrl()), Paths.get(IMAGEPATH), StandardCopyOption.COPY_ATTRIBUTES).toString();
+            product.setImagePath(imagePath);
+
 
             customHib.update(product);
             loadProductListManager();
@@ -123,6 +133,16 @@ public class ProductController {
         } catch (NullPointerException ignored) {
 
         }
+    }
+
+    public void loadProductType() {
+        productType.getItems().clear();
+        productType.getItems().addAll(ProductType.values());
+    }
+
+    private void loadProductListManager() {
+        productListManager.getItems().clear();
+        productListManager.getItems().addAll(customHib.getAllRecords(Product.class));
     }
 
     public void loadProductData() {
@@ -152,11 +172,19 @@ public class ProductController {
                 }
             }
 
-//            warehouseComboBox.getSelectionModel().select(selectedProduct.getWarehouse());
+            imagePreview.setImage(new Image(selectedProduct.getImagePath()));
         } catch (NullPointerException ignored) {
-
         }
     }
 
-
+    public void uploadImageButton() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+        File productImageFile = fileChooser.showOpenDialog(productTitleField.getScene().getWindow());
+        imagePath = productImageFile.toURI().toString();
+        imagePreview.setImage(new Image(imagePath));
+    }
 }

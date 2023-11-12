@@ -1,6 +1,7 @@
 package com.CandyShop.model;
 
 import jakarta.persistence.*;
+import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,9 @@ import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.List;
 
 @NoArgsConstructor
@@ -23,9 +26,9 @@ public class Product implements Serializable {
     String title;
     String description;
     String manufacturer;
-    byte[] image;
     int price;
 
+    String imagePath;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -41,14 +44,7 @@ public class Product implements Serializable {
         this.description = description;
         this.manufacturer = manufacturer;
     }
-
-//    public Product(String title, String description, String manufacturer, Warehouse warehouse) {
-//        this.title = title;
-//        this.description = description;
-//        this.manufacturer = manufacturer;
-//        this.warehouse = warehouse;
-//    }
-
+    
     @Override
     public String toString() {
         return title + " " + description;

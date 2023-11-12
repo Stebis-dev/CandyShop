@@ -5,9 +5,10 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="565.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainshop.ProductController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="503.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainshop.ProductController">
 
     <ListView fx:id="productListManager" layoutX="16.0" layoutY="14.0" onMouseClicked="#loadProductData" prefHeight="312.0" prefWidth="244.0" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="14.0" />
     <TextField fx:id="productTitleField" layoutX="276.0" layoutY="14.0" prefHeight="26.0" prefWidth="305.0" promptText="Title" AnchorPane.rightAnchor="18.399999999999977" AnchorPane.topAnchor="13.999999999999979" />
@@ -19,4 +20,6 @@
     <Button layoutX="509.0" layoutY="339.0" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="26.0" prefWidth="73.0" text="Add new" AnchorPane.bottomAnchor="34.6" AnchorPane.rightAnchor="17.400000000000006" />
     <Button layoutX="16.0" layoutY="339.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="26.0" prefWidth="58.0" text="Update" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="16.0" />
     <Button layoutX="84.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="26.0" prefWidth="58.0" text="Delete" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="84.0" />
+    <Button layoutX="505.0" layoutY="333.0" mnemonicParsing="false" onAction="#uploadImageButton" prefHeight="26.0" prefWidth="306.0" text="Upload image" AnchorPane.rightAnchor="16.600000000000023" />
+    <ImageView fx:id="imagePreview" fitHeight="237.0" fitWidth="200.0" layoutX="286.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="20.0" />
 </AnchorPane>
