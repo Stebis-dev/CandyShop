@@ -35,7 +35,9 @@ public class ProductCardController {
 
     public void setCardSize(double width) {
         // set min
+        productImage.setFitWidth(width - 20);
         root.setPrefWidth(width);
+
     }
 
     public void addProductToCart() {

@@ -88,7 +88,6 @@ public class ProductController {
                     chemicalDescriptionField.getText());
         }
 
-//        product.setImagePath(Files.copy(Paths.get(imagePreview.getImage().getUrl()), Paths.get(IMAGEPATH), StandardCopyOption.COPY_ATTRIBUTES).toString());
         product.setImagePath(imagePath);
 
         customHib.create(product);
@@ -114,15 +113,25 @@ public class ProductController {
                 ((Snacks) product).setWeight(Double.parseDouble(weightField.getText()));
                 ((Snacks) product).setChemicalContents(chemicalDescriptionField.getText());
             }
-//            Files.copy(Paths.get(imagePreview.getImage().getUrl()), Paths.get(IMAGEPATH), StandardCopyOption.COPY_ATTRIBUTES).toString();
-            product.setImagePath(imagePath);
 
+            product.setImagePath(imagePath);
 
             customHib.update(product);
             loadProductListManager();
         } catch (NullPointerException ignored) {
 
         }
+    }
+
+    public void uploadImageButton() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+        File productImageFile = fileChooser.showOpenDialog(productTitleField.getScene().getWindow());
+        imagePath = productImageFile.toURI().toString();
+        imagePreview.setImage(new Image(imagePath));
     }
 
     public void deleteProduct() {
@@ -175,16 +184,5 @@ public class ProductController {
             imagePreview.setImage(new Image(selectedProduct.getImagePath()));
         } catch (NullPointerException ignored) {
         }
-    }
-
-    public void uploadImageButton() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
-        File productImageFile = fileChooser.showOpenDialog(productTitleField.getScene().getWindow());
-        imagePath = productImageFile.toURI().toString();
-        imagePreview.setImage(new Image(imagePath));
     }
 }

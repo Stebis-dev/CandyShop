@@ -29,7 +29,7 @@ public class CartController implements CartHandler {
     @FXML
     public ListView<Warehouse> orderWarehouseList;
 
-    private static final int NUM_CARDS_PER_ROW = 4;
+    private static int NUM_CARDS_PER_ROW = 4;
     private static final double CARD_SPACING = 10;
     @FXML
     private ScrollPane productPane;
@@ -56,7 +56,13 @@ public class CartController implements CartHandler {
     }
 
     private void adjustCardSizes(double containerWidth) {
-        double cardWidth = (containerWidth - (CARD_SPACING * (NUM_CARDS_PER_ROW + 1))) / NUM_CARDS_PER_ROW;
+//        System.out.println(containerWidth);
+        if (containerWidth < 800) {
+            NUM_CARDS_PER_ROW = 3;
+        } else {
+            NUM_CARDS_PER_ROW = 4;
+        }
+        double cardWidth = (containerWidth - (CARD_SPACING * NUM_CARDS_PER_ROW)) / NUM_CARDS_PER_ROW;
         for (ProductCardController card : cardControllers) {
             card.setCardSize(cardWidth);
         }
