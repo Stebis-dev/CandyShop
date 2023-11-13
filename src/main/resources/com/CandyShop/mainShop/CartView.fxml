@@ -4,21 +4,18 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="503.0" prefWidth="828.0"
-            xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.CandyShop.controllers.mainShop.CartController">
-    <Button layoutX="547.0" layoutY="14.0" mnemonicParsing="false" onAction="#addToCart" text="Add"
-            AnchorPane.rightAnchor="14.600000000000001" AnchorPane.topAnchor="14.0"/>
-    <ListView fx:id="userCart" layoutX="300.0" layoutY="47.0" prefHeight="190.0" prefWidth="201.0"
-              AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="47.0"/>
-    <Button layoutX="489.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteFromCart" text="Delete"
-            AnchorPane.rightAnchor="60.6" AnchorPane.topAnchor="14.0"/>
-    <Button layoutX="506.0" layoutY="360.0" mnemonicParsing="false" onAction="#createOrder" text="Create order"
-            AnchorPane.bottomAnchor="14.399999999999999" AnchorPane.rightAnchor="11.599999999999994"/>
-    <ListView fx:id="orderWarehouseList" layoutX="301.0" layoutY="245.0" prefHeight="209.0" prefWidth="202.0"
-              AnchorPane.bottomAnchor="49.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="245.0"/>
-    <ScrollPane fx:id="productPane" layoutX="14.0" layoutY="48.0" prefHeight="408.0" prefWidth="589.0"
-                AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="225.0"
-                AnchorPane.topAnchor="48.0"/>
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="503.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.CartController">
+    <Button layoutX="506.0" layoutY="360.0" mnemonicParsing="false" onAction="#createOrder" text="Create order" AnchorPane.bottomAnchor="14.399999999999999" AnchorPane.rightAnchor="11.599999999999994" />
+    <ListView fx:id="orderWarehouseList" layoutX="515.0" layoutY="337.0" prefHeight="151.0" prefWidth="202.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="337.0" />
+   <VBox alignment="TOP_CENTER" layoutX="-2.0" prefHeight="312.0" prefWidth="828.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <ScrollPane fx:id="cartPane" hbarPolicy="NEVER" prefHeight="288.0" prefWidth="822.0">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="815.0" />
+           </content>
+         </ScrollPane>
+      </children>
+   </VBox>
 </AnchorPane>

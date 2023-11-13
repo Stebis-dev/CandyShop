@@ -49,6 +49,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("CandyShop");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -65,6 +66,7 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) loginField.getScene().getWindow();
             stage.setTitle("CandyShop");
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         } else {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "login INFO", "Wrong data", "Please check credentials, no such user");

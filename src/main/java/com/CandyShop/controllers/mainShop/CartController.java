@@ -1,6 +1,7 @@
 package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.controllers.common.CartProductCardController;
 import com.CandyShop.controllers.common.ProductCardController;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
@@ -23,18 +24,17 @@ public class CartController implements CartHandler {
 
     @FXML
     public ListView<Product> productList;
-
     @FXML
     public ListView<Cart> userCart;
     @FXML
     public ListView<Warehouse> orderWarehouseList;
 
-    private static int NUM_CARDS_PER_ROW = 4;
+    private static int NUM_CARDS_PER_ROW = 1;
     private static final double CARD_SPACING = 10;
     @FXML
-    private ScrollPane productPane;
-    private FlowPane productContainer;
-    private List<ProductCardController> cardControllers = new ArrayList<>();
+    private ScrollPane cartPane;
+    private FlowPane cartContainer;
+    private List<CartProductCardController> cartProductsControllers = new ArrayList<>();
 
     public User currentUser;
 
@@ -50,55 +50,45 @@ public class CartController implements CartHandler {
     }
 
     public void loadData() {
+        loadCards();
         loadCartList();
         loadWarehouseList();
-        loadCards();
     }
 
-    private void adjustCardSizes(double containerWidth) {
-//        System.out.println(containerWidth);
-        if (containerWidth < 800) {
-            NUM_CARDS_PER_ROW = 3;
-        } else {
-            NUM_CARDS_PER_ROW = 4;
-        }
-        double cardWidth = (containerWidth - (CARD_SPACING * NUM_CARDS_PER_ROW)) / NUM_CARDS_PER_ROW;
-        for (ProductCardController card : cardControllers) {
-            card.setCardSize(cardWidth);
-        }
-    }
-
-    private void addProductCard(Product product) {
+    private void addCartProductCard(Cart cart) {
         try {
-            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("common/ProductCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("common/CartProductCard.fxml"));
             Node card = loader.load();
-            ProductCardController controller = loader.getController();
-            controller.setProduct(product);
+            CartProductCardController controller = loader.getController();
+            controller.setCart(cart);
             controller.setCartHandler(this);
-            cardControllers.add(controller);
-
-            productContainer.getChildren().add(card);
+            cartProductsControllers.add(controller);
+            cartContainer.getChildren().add(card);
         } catch (IOException ignored) {
         }
     }
 
-    public void addToCart(Product product) {
+    private void loadCards() {
         try {
-            Cart customersCartWithProduct = customHib.getUserCartProduct(currentUser.getId(), product.getId());
+            cartContainer = new FlowPane(Orientation.VERTICAL, CARD_SPACING, CARD_SPACING);
+            cartContainer.setAlignment(Pos.TOP_CENTER);
 
-            if (customersCartWithProduct != null) {
-                customersCartWithProduct.addProduct();
-                customHib.update(customersCartWithProduct);
+            cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                double width = newValue.getWidth();
+                cartContainer.setPrefWrapLength(width);
+//                adjustCardSizes(productPane.getWidth());
+            });
+
+            for (Cart cart : customHib.getUserCarts(currentUser.getId())) {
+                addCartProductCard(cart);
             }
-        } catch (Exception ignored) {
-            if (product != null) {
-                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product);
-                customHib.create(cart);
-            }
-        } finally {
-            loadCartList();
+
+
+            cartPane.setContent(cartContainer);
+        } catch (NullPointerException ignored) {
         }
     }
+
 
     public void addToCart() {
         Product selectProduct = null;
@@ -158,32 +148,22 @@ public class CartController implements CartHandler {
         }
     }
 
-    private void loadCards() {
-        try {
-            productContainer = new FlowPane(Orientation.HORIZONTAL, CARD_SPACING, CARD_SPACING);
-            productContainer.setAlignment(Pos.TOP_LEFT);
-
-            productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                double width = newValue.getWidth();
-                productContainer.setPrefWrapLength(width);
-                adjustCardSizes(productPane.getWidth());
-            });
-
-            for (Product product : customHib.getAllRecords(Product.class)) {
-                addProductCard(product);
-            }
-
-
-            productPane.setContent(productContainer);
-        } catch (NullPointerException ignored) {
-        }
-    }
-
     private void loadCartList() {
         try {
             userCart.getItems().clear();
             userCart.getItems().addAll(customHib.getUserCarts(currentUser.getId()));
         } catch (Exception ignored) {
         }
+    }
+
+    @Override
+    public void updateCart(Cart cart) {
+        customHib.update(cart);
+    }
+
+    @Override
+    public void deleteCart(Cart cart) {
+        customHib.delete(Cart.class, cart.getId());
+        loadCards();
     }
 }

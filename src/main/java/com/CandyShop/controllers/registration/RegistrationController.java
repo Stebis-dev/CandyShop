@@ -160,6 +160,7 @@ public class RegistrationController implements Initializable {
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("CandyShop");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 

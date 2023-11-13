@@ -1,6 +1,6 @@
 package com.CandyShop.controllers.common;
 
-import com.CandyShop.controllers.mainShop.CartHandler;
+import com.CandyShop.controllers.mainShop.CatalogHandler;
 import com.CandyShop.model.Product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class ProductCardController {
+    @FXML
     public VBox root;
     @FXML
     private ImageView productImage;
@@ -17,7 +18,7 @@ public class ProductCardController {
     @FXML
     private Label productPrice;
     private Product product;
-    private CartHandler cartHandler;
+    private CatalogHandler catalogHandler;
 
 
     public void setProduct(Product product) {
@@ -29,8 +30,8 @@ public class ProductCardController {
         }
     }
 
-    public void setCartHandler(CartHandler cartHandler) {
-        this.cartHandler = cartHandler;
+    public void setCatalogHandler(CatalogHandler catalogHandler) {
+        this.catalogHandler = catalogHandler;
     }
 
     public void setCardSize(double width) {
@@ -41,7 +42,7 @@ public class ProductCardController {
     }
 
     public void addProductToCart() {
-        cartHandler.addToCart(product);
+        catalogHandler.addToCart(product);
     }
 
 
