@@ -33,6 +33,6 @@ public class WarehouseInventory {
 
     @Override
     public String toString() {
-        return amount + "\t" + product.getTitle();
+        return amount + "\t" + product.getName();
     }
 }

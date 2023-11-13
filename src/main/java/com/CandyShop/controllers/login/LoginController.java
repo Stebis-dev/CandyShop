@@ -1,7 +1,7 @@
 package com.CandyShop.controllers.login;
 
 import com.CandyShop.StartGui;
-import com.CandyShop.controllers.mainshop.MainShopController;
+import com.CandyShop.controllers.mainShop.MainShopController;
 import com.CandyShop.controllers.registration.RegistrationController;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.hibernateControllers.GenericHib;

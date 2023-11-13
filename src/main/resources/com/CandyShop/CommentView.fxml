@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.CandyShop.controllers.mainshop.CommentController"
+            fx:controller="com.CandyShop.controllers.mainShop.CommentController"
             prefHeight="400.0" prefWidth="600.0">
 
     <TextField fx:id="commentTitleField" layoutX="331.0" layoutY="35.0" prefHeight="26.0"

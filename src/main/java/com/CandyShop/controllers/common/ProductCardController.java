@@ -1,6 +1,6 @@
 package com.CandyShop.controllers.common;
 
-import com.CandyShop.controllers.mainshop.CartHandler;
+import com.CandyShop.controllers.mainShop.CartHandler;
 import com.CandyShop.model.Product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,15 +15,15 @@ public class ProductCardController {
     @FXML
     private Label productName;
     @FXML
-    private Label productDescription;
+    private Label productPrice;
     private Product product;
     private CartHandler cartHandler;
 
 
     public void setProduct(Product product) {
         this.product = product;
-        productName.setText(product.getTitle());
-        productDescription.setText(product.getDescription());
+        productName.setText(product.getName());
+        productPrice.setText(Double.toString(product.getPrice()) + " €");
         if (product.getImagePath() != null) {
             productImage.setImage(new Image(product.getImagePath()));
         }

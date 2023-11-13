@@ -1,4 +1,4 @@
-package com.CandyShop.controllers.mainshop;
+package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.StartGui;
 import com.CandyShop.controllers.common.ProductCardController;

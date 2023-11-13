@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.CandyShop.controllers.mainshop.UserController"
+            fx:controller="com.CandyShop.controllers.mainShop.UserController"
             prefHeight="400.0" prefWidth="600.0">
 
     <TableView fx:id="customerTable" layoutX="14.0" layoutY="14.0" prefHeight="178.0" prefWidth="578.0">

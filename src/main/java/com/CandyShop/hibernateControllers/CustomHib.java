@@ -257,12 +257,6 @@ public class CustomHib extends GenericHib {
             em.getTransaction().begin();
 
             var comment = em.find(Comment.class, commentId);
-            var product = comment.getProduct();
-
-            if (product != null) {
-                product.getCommentList().remove(comment);
-                em.merge(comment);
-            }
 
             em.remove(comment);
             em.getTransaction().commit();

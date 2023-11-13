@@ -1,4 +1,4 @@
-package com.CandyShop.controllers.mainshop;
+package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.Product;

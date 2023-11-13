@@ -1,4 +1,4 @@
-package com.CandyShop.controllers.mainshop;
+package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.Comment;
@@ -68,7 +68,7 @@ public class CommentController {
             Comment selectedComment = commentListField.getSelectionModel().getSelectedItem();
             commentTitleField.setText(selectedComment.getCommentTitle());
             commentBodyField.setText(selectedComment.getCommentBody());
-            productCommentLabel.setText(selectedComment.getProduct().getTitle());
+            productCommentLabel.setText(selectedComment.getProduct().getName());
         } catch (NullPointerException ignored) {
 
         }

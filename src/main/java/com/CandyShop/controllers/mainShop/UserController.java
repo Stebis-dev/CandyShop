@@ -1,7 +1,7 @@
-package com.CandyShop.controllers.mainshop;
+package com.CandyShop.controllers.mainShop;
 
-import com.CandyShop.controllers.mainshop.tableViewGuidelines.CustomerTableGuidelines;
-import com.CandyShop.controllers.mainshop.tableViewGuidelines.ManagerTableGuidelines;
+import com.CandyShop.controllers.mainShop.tableViewGuidelines.CustomerTableGuidelines;
+import com.CandyShop.controllers.mainShop.tableViewGuidelines.ManagerTableGuidelines;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.Customer;
 import com.CandyShop.model.Manager;

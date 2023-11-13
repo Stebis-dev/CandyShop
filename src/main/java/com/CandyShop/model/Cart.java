@@ -36,7 +36,7 @@ public class Cart {
 
     @Override
     public String toString() {
-        return amount + "\t" + product.getTitle();
+        return amount + "\t" + product.getName();
     }
 
     public void addProduct() {
