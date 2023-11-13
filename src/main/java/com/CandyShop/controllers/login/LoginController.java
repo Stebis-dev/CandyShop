@@ -35,7 +35,7 @@ public class LoginController implements Initializable {
 
 
     public void registerNewUser() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration/registration.fxml"));
         Parent parent = fxmlLoader.load();
         //Po sios dalies as galiu pasiekti kontrolerius
         RegistrationController registrationController = fxmlLoader.getController();
@@ -57,7 +57,7 @@ public class LoginController implements Initializable {
         User user = customHib.getUserByCredentials(loginField.getText(), passwordField.getText());
         //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
         if (user != null) {
-            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("mainShop/main-shop.fxml"));
             Parent parent = fxmlLoader.load();
             MainShopController mainShopController = fxmlLoader.getController();
             mainShopController.setData(entityManagerFactory, user);

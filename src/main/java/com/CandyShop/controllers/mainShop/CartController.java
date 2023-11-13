@@ -70,7 +70,7 @@ public class CartController implements CartHandler {
 
     private void addProductCard(Product product) {
         try {
-            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("ProductCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("common/ProductCard.fxml"));
             Node card = loader.load();
             ProductCardController controller = loader.getController();
             controller.setProduct(product);

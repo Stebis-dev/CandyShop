@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -65,14 +65,17 @@
                 </Tab>
             </tabs>
         </TabPane>
-      <MenuButton alignment="TOP_LEFT" layoutX="1154.0" layoutY="14.0" mnemonicParsing="false" text="Cart" AnchorPane.rightAnchor="14.600000000000001" AnchorPane.topAnchor="14.0">
+      <MenuButton alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="1154.0" layoutY="14.0" mnemonicParsing="false" popupSide="LEFT" text="Cart" AnchorPane.rightAnchor="14.600000000000001" AnchorPane.topAnchor="14.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
-               <graphic>
-                  <ListView prefHeight="200.0" prefWidth="200.0" />
-               </graphic>
-            </MenuItem>
-          <MenuItem mnemonicParsing="false" text="Action 2" />
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
+               <content>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </ScrollPane>
+               </content>
+            </CustomMenuItem>
         </items>
       </MenuButton>
     </children>

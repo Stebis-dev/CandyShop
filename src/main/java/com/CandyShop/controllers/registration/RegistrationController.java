@@ -153,7 +153,7 @@ public class RegistrationController implements Initializable {
     }
 
     public void returnToLogin() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login/login.fxml"));
         Parent parent = fxmlLoader.load();
 
         Scene scene = new Scene(parent);
