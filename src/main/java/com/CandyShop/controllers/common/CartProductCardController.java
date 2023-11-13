@@ -1,9 +1,7 @@
 package com.CandyShop.controllers.common;
 
 import com.CandyShop.controllers.mainShop.CartHandler;
-import com.CandyShop.controllers.mainShop.CatalogHandler;
 import com.CandyShop.model.Cart;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -50,10 +48,13 @@ public class CartProductCardController {
     public void depriveFromAmount() {
         if (cart.getAmount() > 0) {
             cart.setAmount(cart.getAmount() - 1);
+            cartHandler.updateCart(cart);
+        } else {
+            deleteProductFromCart();
         }
         loadCartData();
-        cartHandler.updateCart(cart);
     }
+
 
     public void addToAmount() {
         if (cart.getAmount() < 500) {
