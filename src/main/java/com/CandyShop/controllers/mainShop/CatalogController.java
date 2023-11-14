@@ -28,13 +28,17 @@ public class CatalogController implements CatalogHandler {
     private ScrollPane productPane;
     private FlowPane productContainer;
     private List<ProductCardController> cardControllers = new ArrayList<>();
-
+    private MainShopHandler mainShopHandler;
     public User currentUser;
 
     private CustomHib customHib;
 
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         customHib = new CustomHib(entityManagerFactory);
+    }
+
+    public void setMainShopHandler(MainShopHandler mainShopHandler) {
+        this.mainShopHandler = mainShopHandler;
     }
 
     public void setCurrentUser(User user) {
@@ -65,6 +69,7 @@ public class CatalogController implements CatalogHandler {
             ProductCardController controller = loader.getController();
             controller.setProduct(product);
             controller.setCatalogHandler(this);
+            controller.setMainShopHandler(mainShopHandler);
             cardControllers.add(controller);
 
             productContainer.getChildren().add(card);

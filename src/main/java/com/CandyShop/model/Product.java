@@ -55,6 +55,6 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return name + " " + description;
+        return name;
     }
 }

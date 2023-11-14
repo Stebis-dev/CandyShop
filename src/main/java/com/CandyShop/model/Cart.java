@@ -34,6 +34,13 @@ public class Cart {
         this.amount = 1;
     }
 
+    public Cart(LocalDate dateCreated, Customer customer, Product product, int amount) {
+        this.dateCreated = dateCreated;
+        this.customer = customer;
+        this.product = product;
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return amount + "\t" + product.getName();
@@ -42,9 +49,5 @@ public class Cart {
     public void addProduct() {
         this.amount++;
     }
-
-    public void removeProduct() {
-        this.amount++;
-    }
-
+    
 }

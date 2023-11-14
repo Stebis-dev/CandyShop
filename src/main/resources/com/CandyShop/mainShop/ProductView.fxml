@@ -1,37 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="589.0" prefWidth="993.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.ProductController">
-
-    <ListView fx:id="productListManager" layoutX="14.0" layoutY="14.0" onMouseClicked="#loadProductData" prefHeight="500.0" prefWidth="244.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
-    <Label fx:id="productNameLabel" layoutX="269.0" layoutY="14.0" text="Product name" />
-    <TextField fx:id="productNameField" layoutX="269.0" layoutY="34.0" prefHeight="26.0" prefWidth="244.0" promptText="Product name" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="34.0" />
-    <Label fx:id="priceLabel" layoutX="269.0" layoutY="60.0" text="Price €" />
-    <TextField fx:id="priceField" layoutX="269.0" layoutY="78.0" prefHeight="26.0" prefWidth="244.0" promptText="Price €" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="78.0" />
-    <Label fx:id="countryOfOriginLabel" layoutX="269.0" layoutY="104.0" text="Country of origin" />
-    <TextField fx:id="countryOfOriginField" layoutX="269.0" layoutY="122.0" prefHeight="26.0" prefWidth="244.0" promptText="Country of origin" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="122.0" />
-    <Label fx:id="weightLabel" layoutX="269.0" layoutY="148.0" text="Neto weight" />
-    <TextField fx:id="weightField" layoutX="269.0" layoutY="166.0" prefHeight="26.0" prefWidth="244.0" promptText="Neto weight" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="166.0" />
-    <Label fx:id="storageConditionsLabel" layoutX="269.0" layoutY="192.0" text="Storage conditions" />
-    <TextField fx:id="storageConditionsField" layoutX="269.0" layoutY="210.0" prefHeight="26.0" prefWidth="244.0" promptText="Storage conditions" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="210.0" />
-    <ComboBox fx:id="productType" layoutX="525.0" layoutY="34.0" onAction="#changedProductType" prefHeight="26.0" prefWidth="195.0" promptText="Product type" AnchorPane.rightAnchor="273.0" AnchorPane.topAnchor="34.0" />
-    <Label fx:id="descriptionLabel" layoutX="525.0" layoutY="60.0" text="Description" AnchorPane.rightAnchor="407.2" AnchorPane.topAnchor="60.0" />
-    <TextArea fx:id="descriptionField" layoutX="525.0" layoutY="78.0" prefHeight="158.0" prefWidth="195.0" promptText="Description" wrapText="true" AnchorPane.rightAnchor="273.0" AnchorPane.topAnchor="78.0" />
-    <ImageView fx:id="imagePreview" fitHeight="183.0" fitWidth="244.0" layoutX="731.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="17.0" />
-    <Button layoutX="731.0" layoutY="210.0" mnemonicParsing="false" onAction="#uploadImageButton" prefHeight="26.0" prefWidth="244.0" text="Upload image" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="210.0" />
-    <Label fx:id="ingredientsLabel" layoutX="269.0" layoutY="236.0" text="Ingredients" AnchorPane.leftAnchor="269.00000000000006" />
-    <TextArea fx:id="ingredientsField" layoutX="269.0" layoutY="254.0" prefHeight="114.0" prefWidth="708.0" promptText="Ingredients" wrapText="true" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="254.0" />
-    <Label fx:id="nutritionalValueLabel" layoutX="269.0" layoutY="368.0" text="Nutritional value (100 x)" AnchorPane.leftAnchor="269.00000000000006" AnchorPane.rightAnchor="596.8" AnchorPane.topAnchor="368.0" />
-    <TextArea fx:id="nutritionalValueField" layoutX="269.0" layoutY="386.0" prefHeight="129.0" prefWidth="708.0" promptText="Nutritional value" wrapText="true" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="386.0" />
-    <Button layoutX="509.0" layoutY="339.0" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="26.0" prefWidth="73.0" text="Add new" AnchorPane.bottomAnchor="34.6" AnchorPane.rightAnchor="17.400000000000006" />
-    <Button layoutX="16.0" layoutY="339.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="26.0" prefWidth="58.0" text="Update" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="16.0" />
-    <Button layoutX="84.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="26.0" prefWidth="58.0" text="Delete" AnchorPane.bottomAnchor="34.6" AnchorPane.leftAnchor="84.0" />
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.ProductController">
+   <children>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <content>
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fx:id="productImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="50.0" top="50.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <VBox maxWidth="500.0">
+                           <children>
+                              <Label fx:id="productName" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" text="Name" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="30.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="productPrice" maxWidth="1.7976931348623157E308" prefHeight="18.0" text="Price" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="productDescription" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" text="Description" wrapText="true">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox prefHeight="19.0" prefWidth="227.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#decreaseAmount" prefHeight="26.0" prefWidth="26.0" text="-" />
+                                    <Label fx:id="amountLabel" alignment="CENTER" prefHeight="26.0" prefWidth="32.0" text="100" />
+                                    <Button mnemonicParsing="false" onAction="#AddAmount" prefHeight="26.0" prefWidth="26.0" text="+" />
+                                 </children>
+                              </HBox>
+                              <Button mnemonicParsing="false" onAction="#addToCart" prefHeight="26.0" prefWidth="200.0" text="Add to cart">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Label maxWidth="1.7976931348623157E308" text="Description">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="productIngredients" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="Ingredients" wrapText="true">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="producNutritionalValue" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="NutritionalValue" wrapText="true">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label maxWidth="1.7976931348623157E308" prefHeight="4.0" prefWidth="227.0" text="Additional information" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="productWeight" maxWidth="1.7976931348623157E308" text="Weight">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="productCountryOfOrigin" maxWidth="1.7976931348623157E308" text="CountryOfOrigin">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="productStorageConditions" maxWidth="1.7976931348623157E308" text="StorageConditions">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>

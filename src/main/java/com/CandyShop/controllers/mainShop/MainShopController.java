@@ -1,18 +1,23 @@
 package com.CandyShop.controllers.mainShop;
 
+import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
 import jakarta.persistence.EntityManagerFactory;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
-public class MainShopController implements Initializable {
+public class MainShopController implements Initializable, MainShopHandler {
 
     @FXML
     public TabPane tabPane;
+    @FXML
+    public Tab selectedProductTab;
     @FXML
     public Tab catalogTab;
     @FXML
@@ -22,18 +27,20 @@ public class MainShopController implements Initializable {
     @FXML
     public Tab warehouseTab;
     @FXML
-    public Tab productsTab;
+    public Tab productCreationTab;
     @FXML
     public Tab commentTab;
     @FXML
     public Tab OrderTab;
 
     @FXML
+    private ProductController productSectionController;
+    @FXML
     private CatalogController catalogSectionController;
     @FXML
     private CartController cartSectionController;
     @FXML
-    private ProductController productSectionController;
+    private ProductCreationController productCreationSectionController;
     @FXML
     private WarehouseController warehouseSectionController;
     @FXML
@@ -44,17 +51,20 @@ public class MainShopController implements Initializable {
     private UserController userSectionController;
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
+    private CustomHib customHib;
 
     public MainShopController() {
     }
 
     public void setData(EntityManagerFactory entityManagerFactory, User currentUser) {
         this.entityManagerFactory = entityManagerFactory;
+        customHib = new CustomHib(entityManagerFactory);
         this.currentUser = currentUser;
+        tabPane.getTabs().remove(selectedProductTab);
 
         loadTabValues();
     }
-    
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,14 +77,15 @@ public class MainShopController implements Initializable {
             if (catalogTab.isSelected()) {
                 catalogSectionController.setCurrentUser(currentUser);
                 catalogSectionController.setEntityManagerFactory(entityManagerFactory);
+                catalogSectionController.setMainShopHandler(this);
                 catalogSectionController.loadData();
             } else if (cartTab.isSelected()) {
                 cartSectionController.setCurrentUser(currentUser);
                 cartSectionController.setEntityManagerFactory(entityManagerFactory);
                 cartSectionController.loadData();
-            } else if (productsTab.isSelected()) {
-                productSectionController.setEntityManagerFactory(entityManagerFactory);
-                productSectionController.loadData();
+            } else if (productCreationTab.isSelected()) {
+                productCreationSectionController.setEntityManagerFactory(entityManagerFactory);
+                productCreationSectionController.loadData();
             } else if (usersTab.isSelected()) {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (warehouseTab.isSelected()) {
@@ -83,6 +94,7 @@ public class MainShopController implements Initializable {
                 commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
+                tabPane.getTabs().remove(productCreationTab);
             }
         } catch (NullPointerException ignored) {
 
@@ -91,5 +103,19 @@ public class MainShopController implements Initializable {
 
     public void openCartTab() {
         tabPane.getSelectionModel().select(cartTab);
+    }
+
+    @Override
+    public void setProductCreationTab(Product product) {
+        tabPane.getTabs().add(0, selectedProductTab);
+        tabPane.getSelectionModel().select(selectedProductTab);
+        productSectionController.setData(product);
+        productSectionController.setMainShopHandler(this);
+    }
+
+    @Override
+    public void addToCart(Product product, int amount) {
+        Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product, amount);
+        customHib.create(cart);
     }
 }

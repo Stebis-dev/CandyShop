@@ -1,178 +1,83 @@
 package com.CandyShop.controllers.mainShop;
 
-import com.CandyShop.hibernateControllers.CustomHib;
-import com.CandyShop.model.*;
-import jakarta.persistence.EntityManagerFactory;
+import com.CandyShop.model.Product;
+import com.CandyShop.model.ProductType;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 
 import java.io.File;
 
 public class ProductController {
     @FXML
-    public ListView<Product> productListManager;
+    public ImageView productImage;
     @FXML
-    public Label productNameLabel;
+    public Label productName;
     @FXML
-    public TextField productNameField;
+    public Label productPrice;
     @FXML
-    public Label priceLabel;
+    public Label productDescription;
     @FXML
-    public TextField priceField;
+    public Label productIngredients;
     @FXML
-    public Label countryOfOriginLabel;
+    public Label producNutritionalValue;
     @FXML
-    public TextField countryOfOriginField;
+    public Label productWeight;
     @FXML
-    public Label weightLabel;
+    public Label productCountryOfOrigin;
     @FXML
-    public TextField weightField;
+    public Label productStorageConditions;
     @FXML
-    public Label storageConditionsLabel;
-    @FXML
-    public TextField storageConditionsField;
-    @FXML
-    public ComboBox<ProductType> productType;
-    @FXML
-    public Label descriptionLabel;
-    @FXML
-    public TextArea descriptionField;
-    @FXML
-    public ImageView imagePreview;
-    @FXML
-    public Label ingredientsLabel;
-    @FXML
-    public TextArea ingredientsField;
-    @FXML
-    public Label nutritionalValueLabel;
-    @FXML
-    public TextArea nutritionalValueField;
+    public Label amountLabel;
+    private int amount;
 
+    private Product product;
+    private MainShopHandler mainShopHandler;
 
-    public String imagePath;
-    private CustomHib customHib;
-
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-        customHib = new CustomHib(entityManagerFactory);
+    void setData(Product product) {
+        amount = 1;
+        this.product = product;
+        loadProductData();
     }
 
-    public void loadData() {
-        clearProductData();
-        loadProductListManager();
-        loadProductType();
-    }
-
-
-    public void changedProductType() {
-        if (productType.getSelectionModel().getSelectedItem() == ProductType.DRINK) {
-            weightField.setPromptText("Neto weight ml.");
-            weightLabel.setText("Neto weight ml.");
-            nutritionalValueLabel.setText("Nutritional value (100 ml.)");
-        } else {
-            weightField.setPromptText("Neto weight g");
-            weightLabel.setText("Neto weight g");
-            nutritionalValueLabel.setText("Nutritional value (100 g.)");
-        }
-    }
-
-
-    public void addNewProduct() throws NullPointerException {
-        Product product = new Product(
-                productNameField.getText(),
-                Double.parseDouble(priceField.getText()),
-                countryOfOriginField.getText(),
-                Double.parseDouble(weightField.getText()),
-                storageConditionsField.getText(),
-                productType.getSelectionModel().getSelectedItem(),
-                descriptionField.getText(),
-                imagePath,
-                ingredientsField.getText(),
-                nutritionalValueField.getText()
-        );
-
-        customHib.create(product);
-        loadProductListManager();
-    }
-
-    public void updateProduct() throws NullPointerException {
-        Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
-        Product product = customHib.getEntityById(Product.class, selectedProduct.getId());
-
-        product.setName(productNameField.getText());
-        product.setPrice(Double.parseDouble(priceField.getText()));
-        product.setCountryOfOrigin(countryOfOriginField.getText());
-        product.setWeight(Double.parseDouble(weightField.getText()));
-        product.setStorageConditions(storageConditionsField.getText());
-        product.setCategory(productType.getSelectionModel().getSelectedItem());
-        product.setDescription(descriptionField.getText());
-        product.setIngredients(ingredientsField.getText());
-        product.setNutritionalValue(nutritionalValueField.getText());
-        product.setImagePath(imagePath);
-
-        product.setImagePath(imagePath);
-
-        customHib.update(product);
-        loadProductListManager();
-    }
-
-    public void uploadImageButton() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
-        File productImageFile = fileChooser.showOpenDialog(productNameField.getScene().getWindow());
-        imagePath = productImageFile.toURI().toString();
-        imagePreview.setImage(new Image(imagePath));
-    }
-
-    public void deleteProduct() throws NullPointerException {
-        Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
-        customHib.deleteProduct(selectedProduct.getId());
-        loadProductListManager();
-    }
-
-    public void loadProductType() {
-        productType.getItems().clear();
-        productType.getItems().addAll(ProductType.values());
-    }
-
-    private void loadProductListManager() {
-        productListManager.getItems().clear();
-        productListManager.getItems().addAll(customHib.getAllRecords(Product.class));
+    public void setMainShopHandler(MainShopHandler mainShopHandler) {
+        this.mainShopHandler = mainShopHandler;
     }
 
     public void loadProductData() {
-        try {
-            Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
-
-            productNameField.setText(selectedProduct.getName());
-            priceField.setText(Double.toString(selectedProduct.getPrice()));
-            countryOfOriginField.setText(selectedProduct.getCountryOfOrigin());
-            weightField.setText(Double.toString(selectedProduct.getWeight()));
-            storageConditionsField.setText(selectedProduct.getStorageConditions());
-            productType.getSelectionModel().select(selectedProduct.getCategory());
-            descriptionField.setText(selectedProduct.getDescription());
-            ingredientsField.setText(selectedProduct.getIngredients());
-            nutritionalValueField.setText(selectedProduct.getNutritionalValue());
-            imagePreview.setImage(new Image(selectedProduct.getImagePath()));
-
-        } catch (NullPointerException ignored) {
+        String measurment = "g.";
+        if (product.getCategory() == ProductType.DRINK) {
+            measurment = "ml.";
         }
+        productImage.setImage(new Image(product.getImagePath()));
+        productName.setText(product.getName() + ", " + Double.toString(product.getWeight()) + " " + measurment);
+        productPrice.setText(Double.toString(product.getPrice()) + "€");
+        amountLabel.setText(Integer.toString(amount));
+        productDescription.setText(product.getDescription());
+        productIngredients.setText(product.getIngredients());
+        producNutritionalValue.setText(product.getNutritionalValue());
+        productWeight.setText("Neto weight:\t\t\t" + Double.toString(product.getWeight()) + " " + measurment);
+        productCountryOfOrigin.setText("Country of origin:\t\t" + product.getCountryOfOrigin());
+        productStorageConditions.setText("Storage conditions:\t\t" + product.getStorageConditions());
     }
 
-    public void clearProductData() {
-        productNameField.clear();
-        priceField.clear();
-        countryOfOriginField.clear();
-        weightField.clear();
-        storageConditionsField.clear();
-        descriptionField.clear();
-        ingredientsField.clear();
-        nutritionalValueField.clear();
-        imagePreview.setImage(null);
+    public void decreaseAmount() {
+        if (amount > 1) {
+            amount = amount - 1;
+        }
+        amountLabel.setText(Integer.toString(amount));
+    }
+
+    public void AddAmount() {
+        if (amount < 500) {
+            amount = amount + 1;
+        }
+        amountLabel.setText(Integer.toString(amount));
+    }
+
+    public void addToCart() {
+        mainShopHandler.addToCart(product, amount);
     }
 }
