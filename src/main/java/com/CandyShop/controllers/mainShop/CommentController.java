@@ -41,16 +41,16 @@ public class CommentController {
     }
 
     public void updateComment() {
-        try {
-            Comment selectedComment = commentListField.getSelectionModel().getSelectedItem();
-            Comment commentFromDb = customHib.getEntityById(Comment.class, selectedComment.getId());
-            commentFromDb.setCommentTitle(commentTitleField.getText());
-            commentFromDb.setCommentBody(commentBodyField.getText());
-            customHib.update(commentFromDb);
-            loadCommentList();
-        } catch (NullPointerException ignored) {
-
-        }
+//        try {
+//            Comment selectedComment = commentListField.getSelectionModel().getSelectedItem();
+//            Comment commentFromDb = customHib.getEntityById(Comment.class, selectedComment.getId());
+//            commentFromDb.setCommentTitle(commentTitleField.getText());
+//            commentFromDb.setCommentBody(commentBodyField.getText());
+//            customHib.update(commentFromDb);
+//            loadCommentList();
+//        } catch (NullPointerException ignored) {
+//
+//        }
     }
 
     public void deleteComment() {
@@ -64,14 +64,14 @@ public class CommentController {
     }
 
     public void loadCommentInfo() {
-        try {
-            Comment selectedComment = commentListField.getSelectionModel().getSelectedItem();
-            commentTitleField.setText(selectedComment.getCommentTitle());
-            commentBodyField.setText(selectedComment.getCommentBody());
-            productCommentLabel.setText(selectedComment.getProduct().getName());
-        } catch (NullPointerException ignored) {
-
-        }
+//        try {
+//            Comment selectedComment = commentListField.getSelectionModel().getSelectedItem();
+//            commentTitleField.setText(selectedComment.getCommentTitle());
+//            commentBodyField.setText(selectedComment.getCommentBody());
+//            productCommentLabel.setText(selectedComment.getProduct().getName());
+//        } catch (NullPointerException ignored) {
+//
+//        }
     }
 
 }

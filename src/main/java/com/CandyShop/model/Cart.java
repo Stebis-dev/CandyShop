@@ -49,5 +49,10 @@ public class Cart {
     public void addProduct() {
         this.amount++;
     }
-    
+
+    public void addProduct(int amount) {
+        this.amount += amount;
+    }
+
+
 }

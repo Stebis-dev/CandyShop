@@ -89,27 +89,6 @@ public class CartController implements CartHandler {
         }
     }
 
-
-    public void addToCart() {
-        Product selectProduct = null;
-        try {
-            selectProduct = productList.getSelectionModel().getSelectedItem();
-            Cart customersCartWithProduct = customHib.getUserCartProduct(currentUser.getId(), selectProduct.getId());
-
-            if (customersCartWithProduct != null) {
-                customersCartWithProduct.addProduct();
-                customHib.update(customersCartWithProduct);
-            }
-        } catch (Exception ignored) {
-            if (selectProduct != null) {
-                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), selectProduct);
-                customHib.create(cart);
-            }
-        } finally {
-            loadCartList();
-        }
-    }
-
     public void deleteFromCart() {
         try {
             Cart selectCart = userCart.getSelectionModel().getSelectedItem();

@@ -1,14 +1,17 @@
 package com.CandyShop.controllers.mainShop;
 
-import com.CandyShop.model.Product;
-import com.CandyShop.model.ProductType;
-import javafx.event.ActionEvent;
+import com.CandyShop.hibernateControllers.CustomHib;
+import com.CandyShop.model.*;
+import com.CandyShop.utils.Pair;
+import jakarta.persistence.EntityManagerFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class ProductController {
     @FXML
@@ -22,7 +25,7 @@ public class ProductController {
     @FXML
     public Label productIngredients;
     @FXML
-    public Label producNutritionalValue;
+    public Label productNutritionalValue;
     @FXML
     public Label productWeight;
     @FXML
@@ -31,34 +34,52 @@ public class ProductController {
     public Label productStorageConditions;
     @FXML
     public Label amountLabel;
+    @FXML
+    public ListView<Comment> reviewList;
+    @FXML
+    public ComboBox<Comment> reviewScore;
+    @FXML
+    public TextArea reviewInputField;
+    @FXML
+    public Button reviewSubmit;
     private int amount;
 
     private Product product;
-    private MainShopHandler mainShopHandler;
+    private User currentUser;
+    private CustomHib customHib;
+
 
     void setData(Product product) {
         amount = 1;
         this.product = product;
-        loadProductData();
     }
 
-    public void setMainShopHandler(MainShopHandler mainShopHandler) {
-        this.mainShopHandler = mainShopHandler;
+    void loadData() {
+        loadProductData();
+        loadComments();
+    }
+
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+        customHib = new CustomHib(entityManagerFactory);
+    }
+
+    public void setCurrentUser(User user) {
+        currentUser = user;
     }
 
     public void loadProductData() {
-        String measurment = "g.";
+        String measurement = "g.";
         if (product.getCategory() == ProductType.DRINK) {
-            measurment = "ml.";
+            measurement = "ml.";
         }
         productImage.setImage(new Image(product.getImagePath()));
-        productName.setText(product.getName() + ", " + Double.toString(product.getWeight()) + " " + measurment);
-        productPrice.setText(Double.toString(product.getPrice()) + "€");
+        productName.setText(product.getName() + ", " + product.getWeight() + " " + measurement);
+        productPrice.setText(product.getPrice() + "€");
         amountLabel.setText(Integer.toString(amount));
         productDescription.setText(product.getDescription());
         productIngredients.setText(product.getIngredients());
-        producNutritionalValue.setText(product.getNutritionalValue());
-        productWeight.setText("Neto weight:\t\t\t" + Double.toString(product.getWeight()) + " " + measurment);
+        productNutritionalValue.setText(product.getNutritionalValue());
+        productWeight.setText("Neto weight:\t\t\t" + product.getWeight() + " " + measurement);
         productCountryOfOrigin.setText("Country of origin:\t\t" + product.getCountryOfOrigin());
         productStorageConditions.setText("Storage conditions:\t\t" + product.getStorageConditions());
     }
@@ -78,6 +99,75 @@ public class ProductController {
     }
 
     public void addToCart() {
-        mainShopHandler.addToCart(product, amount);
+        try {
+            Cart customersCartWithProduct = customHib.getUserCartProduct(currentUser.getId(), product.getId());
+
+            if (customersCartWithProduct != null) {
+                customersCartWithProduct.addProduct(amount);
+                customHib.update(customersCartWithProduct);
+            }
+        } catch (Exception ignored) {
+            if (product != null) {
+                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product);
+                customHib.create(cart);
+            }
+        }
+        amount = 1;
+        amountLabel.setText(String.valueOf(amount));
+    }
+
+    private static void getCommentChildren(Comment comment, List<Comment> list) {
+        list.add(comment);
+        for (Comment child : comment.getChildrenComment()) {
+            getCommentChildren(child, list);
+        }
+    }
+
+
+    public void loadComments() {
+        reviewList.getItems().clear();
+        List<Comment> productComments = customHib.getProductComments(product.getId());
+
+        Map<Integer, Comment> commentMap = new HashMap<>();
+        for (Comment comment : productComments) {
+            commentMap.put(comment.getId(), comment);
+        }
+
+        List<Comment> parents = new ArrayList<>();
+        for (Comment comment : productComments) {
+            if (comment.getParentID() == null) {
+                parents.add(comment);
+            } else {
+                Comment parent = commentMap.get(comment.getParentID());
+                if (parent != null) {
+                    parent.addComment(comment);
+                }
+            }
+        }
+
+        List<Comment> root = new ArrayList<>();
+        for (Comment comment : parents) {
+            getCommentChildren(comment, root);
+        }
+
+        reviewList.getItems().addAll(root);
+    }
+
+
+    public void submitReview() {
+        Comment selectedComment = reviewList.getSelectionModel().getSelectedItem();
+        int commentLevel = 0;
+        Integer parentComment = null;
+        if (selectedComment != null) {
+            commentLevel = selectedComment.getCommentLevel() + 1;
+            parentComment = selectedComment.getId();
+        }
+        Comment comment = new Comment(reviewInputField.getText(), parentComment, currentUser, product, LocalDateTime.now(), commentLevel);
+        if (selectedComment != null) {
+            selectedComment.addComment(comment);
+        }
+        customHib.create(comment);
+        reviewInputField.clear();
+        loadComments();
     }
 }

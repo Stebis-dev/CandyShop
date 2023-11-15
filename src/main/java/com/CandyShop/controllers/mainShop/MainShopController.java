@@ -101,21 +101,13 @@ public class MainShopController implements Initializable, MainShopHandler {
         }
     }
 
-    public void openCartTab() {
-        tabPane.getSelectionModel().select(cartTab);
-    }
-
     @Override
     public void setProductCreationTab(Product product) {
         tabPane.getTabs().add(0, selectedProductTab);
         tabPane.getSelectionModel().select(selectedProductTab);
         productSectionController.setData(product);
-        productSectionController.setMainShopHandler(this);
-    }
-
-    @Override
-    public void addToCart(Product product, int amount) {
-        Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product, amount);
-        customHib.create(cart);
+        productSectionController.setCurrentUser(currentUser);
+        productSectionController.setEntityManagerFactory(entityManagerFactory);
+        productSectionController.loadData();
     }
 }
