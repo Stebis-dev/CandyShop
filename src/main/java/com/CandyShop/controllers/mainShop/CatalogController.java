@@ -8,6 +8,7 @@ import com.CandyShop.model.Customer;
 import com.CandyShop.model.Product;
 import com.CandyShop.model.User;
 import jakarta.persistence.EntityManagerFactory;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
@@ -51,12 +52,16 @@ public class CatalogController implements CatalogHandler {
 
 
     private void adjustCardSizes(double containerWidth) {
-        if (containerWidth < 800) {
+        if (containerWidth > 0 && containerWidth < 300) {
+            NUM_CARDS_PER_ROW = 1;
+        } else if (containerWidth >= 300 && containerWidth < 600) {
+            NUM_CARDS_PER_ROW = 2;
+        } else if (containerWidth >= 600 && containerWidth < 1000) {
             NUM_CARDS_PER_ROW = 3;
         } else {
             NUM_CARDS_PER_ROW = 4;
         }
-        double cardWidth = (containerWidth - (CARD_SPACING * NUM_CARDS_PER_ROW)) / NUM_CARDS_PER_ROW;
+        double cardWidth = (containerWidth - (CARD_SPACING * (NUM_CARDS_PER_ROW - 1)) - 18) / NUM_CARDS_PER_ROW;
         for (ProductCardController card : cardControllers) {
             card.setCardSize(cardWidth);
         }

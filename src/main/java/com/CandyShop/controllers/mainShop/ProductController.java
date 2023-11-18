@@ -2,7 +2,6 @@ package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
-import com.CandyShop.utils.Pair;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
