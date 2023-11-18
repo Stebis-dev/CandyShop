@@ -5,11 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,35 +17,44 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    String title;
+    String name;
+    double price;
+    String countryOfOrigin;
+    double weight;
+    String storageConditions;
+    @Enumerated
+    ProductType category;
     String description;
-    String manufacturer;
+    String imagePath;
+    String ingredients;
+    String nutritionalValue;
 
+    public Product(String name, double price, String countryOfOrigin, double weight, String storageConditions, ProductType category, String description, String imagePath, String ingredients, String nutritionalValue) {
+        this.name = name;
+        this.price = price;
+        this.countryOfOrigin = countryOfOrigin;
+        this.weight = weight;
+        this.storageConditions = storageConditions;
+        this.category = category;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.ingredients = ingredients;
+        this.nutritionalValue = nutritionalValue;
+    }
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    List<Comment> commentList;
-
-    public Product(String title, String description) {
-        this.title = title;
+    public Product(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
-    public Product(String title, String description, String manufacturer) {
-        this.title = title;
+    public Product(String name, String description, String countryOfOrigin) {
+        this.name = name;
         this.description = description;
-        this.manufacturer = manufacturer;
+        this.countryOfOrigin = countryOfOrigin;
     }
-
-//    public Product(String title, String description, String manufacturer, Warehouse warehouse) {
-//        this.title = title;
-//        this.description = description;
-//        this.manufacturer = manufacturer;
-//        this.warehouse = warehouse;
-//    }
 
     @Override
     public String toString() {
-        return title + " " + description;
+        return name;
     }
 }

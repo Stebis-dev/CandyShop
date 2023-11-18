@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="root" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="200.0" spacing="10" style="-fx-padding: 10; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.common.ProductCardController">
+    <ImageView fx:id="productImage" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#goProductDescription" pickOnBounds="true" preserveRatio="true" smooth="false">
+    </ImageView>
+    <Label fx:id="productName" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#goProductDescription" text="Product Name" />
+    <Label fx:id="productPrice" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Price">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin>
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Label>
+    <Button alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addProductToCart" text="Add to Cart" textAlignment="CENTER" />
+    <!-- Add other elements as needed -->
+</VBox>

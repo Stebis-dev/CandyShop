@@ -1,9 +1,12 @@
-package com.CandyShop.fxControllers;
+package com.CandyShop.controllers.login;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.controllers.mainShop.MainShopController;
+import com.CandyShop.controllers.registration.RegistrationController;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.hibernateControllers.GenericHib;
 import com.CandyShop.model.User;
+import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import javafx.fxml.FXML;
@@ -32,7 +35,7 @@ public class LoginController implements Initializable {
 
 
     public void registerNewUser() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration/registration.fxml"));
         Parent parent = fxmlLoader.load();
         //Po sios dalies as galiu pasiekti kontrolerius
         RegistrationController registrationController = fxmlLoader.getController();
@@ -46,6 +49,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("CandyShop");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -54,7 +58,7 @@ public class LoginController implements Initializable {
         User user = customHib.getUserByCredentials(loginField.getText(), passwordField.getText());
         //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
         if (user != null) {
-            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("mainShop/main-shop.fxml"));
             Parent parent = fxmlLoader.load();
             MainShopController mainShopController = fxmlLoader.getController();
             mainShopController.setData(entityManagerFactory, user);
@@ -62,9 +66,10 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) loginField.getScene().getWindow();
             stage.setTitle("CandyShop");
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Login INFO", "Wrong data", "Please check credentials, no such user");
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "login INFO", "Wrong data", "Please check credentials, no such user");
         }
     }
 

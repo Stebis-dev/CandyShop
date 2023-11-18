@@ -257,12 +257,6 @@ public class CustomHib extends GenericHib {
             em.getTransaction().begin();
 
             var comment = em.find(Comment.class, commentId);
-            var product = comment.getProduct();
-
-            if (product != null) {
-                product.getCommentList().remove(comment);
-                em.merge(comment);
-            }
 
             em.remove(comment);
             em.getTransaction().commit();
@@ -328,4 +322,25 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
     }
+
+    public List<Comment> getProductComments(int productId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Comment> query = cb.createQuery(Comment.class);
+            Root<Comment> root = query.from(Comment.class);
+            query.select(root).where(cb.equal(root.get("product").get("id"), productId));
+
+            TypedQuery<Comment> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
 }

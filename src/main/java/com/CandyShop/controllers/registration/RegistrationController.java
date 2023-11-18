@@ -1,10 +1,11 @@
-package com.CandyShop.fxControllers;
+package com.CandyShop.controllers.registration;
 
 import com.CandyShop.StartGui;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.Customer;
 import com.CandyShop.model.Manager;
 import com.CandyShop.model.User;
+import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -152,13 +153,14 @@ public class RegistrationController implements Initializable {
     }
 
     public void returnToLogin() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login/login.fxml"));
         Parent parent = fxmlLoader.load();
 
         Scene scene = new Scene(parent);
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("CandyShop");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 

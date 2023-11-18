@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="503.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.CartController">
+    <Button layoutX="506.0" layoutY="360.0" mnemonicParsing="false" onAction="#createOrder" text="Create order" AnchorPane.bottomAnchor="14.399999999999999" AnchorPane.rightAnchor="11.599999999999994" />
+    <ListView fx:id="orderWarehouseList" layoutX="515.0" layoutY="337.0" prefHeight="151.0" prefWidth="202.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="337.0" />
+   <VBox alignment="TOP_CENTER" layoutX="-2.0" prefHeight="312.0" prefWidth="828.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <ScrollPane fx:id="cartPane" hbarPolicy="NEVER" prefHeight="288.0" prefWidth="822.0">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="815.0" />
+           </content>
+         </ScrollPane>
+      </children>
+   </VBox>
+</AnchorPane>
