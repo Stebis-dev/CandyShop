@@ -24,7 +24,8 @@ import java.util.List;
 
 public class CatalogController implements CatalogHandler {
     private static int NUM_CARDS_PER_ROW = 4;
-    private static final double CARD_SPACING = 10;
+    private static double CARD_SPACING = 10;
+    private static double SCROLL_WIDTH = 15;
     @FXML
     private ScrollPane productPane;
     private FlowPane productContainer;
@@ -52,16 +53,20 @@ public class CatalogController implements CatalogHandler {
 
 
     private void adjustCardSizes(double containerWidth) {
-        if (containerWidth > 0 && containerWidth < 300) {
+        int[] responsive = {0, 400, 600, 1000};
+        if (containerWidth > responsive[0] && containerWidth < responsive[1]) {
             NUM_CARDS_PER_ROW = 1;
-        } else if (containerWidth >= 300 && containerWidth < 600) {
+        } else if (containerWidth >= responsive[1] && containerWidth < responsive[2]) {
             NUM_CARDS_PER_ROW = 2;
-        } else if (containerWidth >= 600 && containerWidth < 1000) {
+        } else if (containerWidth >= responsive[2] && containerWidth < responsive[3]) {
             NUM_CARDS_PER_ROW = 3;
         } else {
             NUM_CARDS_PER_ROW = 4;
         }
-        double cardWidth = (containerWidth - (CARD_SPACING * (NUM_CARDS_PER_ROW - 1)) - 18) / NUM_CARDS_PER_ROW;
+
+        SCROLL_WIDTH = productPane.getWidth() - productPane.getViewportBounds().getWidth();
+        double cardWidth = (containerWidth - (CARD_SPACING * (NUM_CARDS_PER_ROW - 1)) - SCROLL_WIDTH) / NUM_CARDS_PER_ROW - 1;
+
         for (ProductCardController card : cardControllers) {
             card.setCardSize(cardWidth);
         }
@@ -104,16 +109,27 @@ public class CatalogController implements CatalogHandler {
             productContainer = new FlowPane(Orientation.HORIZONTAL, CARD_SPACING, CARD_SPACING);
             productContainer.setAlignment(Pos.TOP_LEFT);
 
-            productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                double width = newValue.getWidth();
-                productContainer.setPrefWrapLength(width);
-                adjustCardSizes(productPane.getWidth());
-            });
-
             for (Product product : customHib.getAllRecords(Product.class)) {
                 addProductCard(product);
             }
 
+            double productPaneWidth = productPane.getWidth();
+
+            if (productPaneWidth >= 0) {
+                productContainer.setPrefWrapLength(productPaneWidth);
+                adjustCardSizes(productPane.getWidth());
+            }
+
+            productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                double width = productPane.getWidth();
+                productContainer.setPrefWrapLength(productPane.getWidth());
+                adjustCardSizes(productPane.getWidth());
+//                productPane.getViewportBounds().getWidth();
+                System.out.println("productPane.getViewportBounds().getWidth()" + productPane.getViewportBounds().getWidth());
+                System.out.println("productPane.getWidth() " + productPane.getWidth());
+                System.out.println("productPane.getPrefViewportWidth() " + productPane.getPrefViewportWidth());
+
+            });
 
             productPane.setContent(productContainer);
         } catch (NullPointerException ignored) {

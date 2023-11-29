@@ -90,11 +90,11 @@ public class MainShopController implements Initializable, MainShopHandler {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (warehouseTab.isSelected()) {
                 warehouseSectionController.setEntityManagerFactory(entityManagerFactory);
+                warehouseSectionController.loadData();
             } else if (commentTab.isSelected()) {
                 commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
-                tabPane.getTabs().remove(productCreationTab);
             }
         } catch (NullPointerException ignored) {
 

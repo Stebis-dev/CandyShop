@@ -17,7 +17,7 @@ public class WarehouseInventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @ManyToOne
     private Warehouse warehouse;
 
     @OneToOne
