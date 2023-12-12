@@ -289,4 +289,23 @@ public class CustomHib extends GenericHib {
         }
     }
 
+    public List<Comment> getOrderComments(int oderId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Comment> query = cb.createQuery(Comment.class);
+            Root<Comment> root = query.from(Comment.class);
+            query.select(root).where(cb.equal(root.get("order").get("id"), oderId));
+
+            TypedQuery<Comment> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
 }

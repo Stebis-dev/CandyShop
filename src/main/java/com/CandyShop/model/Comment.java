@@ -46,6 +46,15 @@ public class Comment {
         this.commentLevel = commentLevel;
     }
 
+    public Comment(String comment, Integer parentID, User user, Order order, LocalDateTime dateCreated, int commentLevel) {
+        this.comment = comment;
+        this.parentID = parentID;
+        this.user = user;
+        this.order = order;
+        this.dateCreated = dateCreated;
+        this.commentLevel = commentLevel;
+    }
+
     public void addComment(Comment comment) {
         childrenComment.add(comment);
     }

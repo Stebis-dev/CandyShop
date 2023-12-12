@@ -11,6 +11,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class OrderController {
 
     @FXML
@@ -70,7 +73,7 @@ public class OrderController {
                 cancelButton.setDisable(false);
                 completeButton.setDisable(false);
             }
-
+            loadComments();
 
         } catch (Exception e) {
 
@@ -83,6 +86,25 @@ public class OrderController {
 
 
     public void submitMessage() {
+        Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
+        int commentLevel = 0;
+        Integer parentComment = null;
+
+        if (!chatInputField.getText().isEmpty()) {
+            Comment comment = new Comment(chatInputField.getText(), parentComment, currentUser,
+                    selectedOrder, LocalDateTime.now(), commentLevel);
+            customHib.create(comment);
+        }
+
+        chatInputField.clear();
+        loadComments();
+    }
+
+    private void loadComments() {
+        chatList.getItems().clear();
+        Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
+        List<Comment> orderComments = customHib.getOrderComments(selectedOrder.getId());
+        chatList.getItems().addAll(orderComments);
     }
 
     public void deleteSelectedComment() {
