@@ -95,6 +95,8 @@ public class MainShopController implements Initializable, MainShopHandler {
                 commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
+                orderSectionController.setCurrentUser(currentUser);
+                orderSectionController.loadData();
             }
         } catch (NullPointerException ignored) {
 

@@ -1,6 +1,7 @@
 package com.CandyShop.hibernateControllers;
 
 import com.CandyShop.model.*;
+import com.CandyShop.model.Order;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -224,6 +225,25 @@ public class CustomHib extends GenericHib {
             em.getTransaction().commit();
         } catch (NullPointerException e) {
             System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<Order> getUsersOrder(int userId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Order> query = cb.createQuery(Order.class);
+            Root<Order> root = query.from(Order.class);
+            query.select(root).where(cb.equal(root.get("customer").get("id"), userId));
+            TypedQuery<Order> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
         } finally {
             if (em != null) em.close();
         }

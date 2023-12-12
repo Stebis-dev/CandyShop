@@ -106,19 +106,10 @@ public class CartController implements CartHandler {
         }
     }
 
-    public void deleteFromCart() {
-        try {
-            Cart selectCart = userCart.getSelectionModel().getSelectedItem();
-            customHib.delete(Cart.class, selectCart.getId());
-            loadCartList();
-        } catch (NullPointerException ignored) {
-        }
-    }
-
     public void createOrder() {
         try {
             Warehouse selectedWarehouse = orderWarehouseList.getSelectionModel().getSelectedItem();
-            Order order = new Order((Customer) currentUser, selectedWarehouse, "Processing");
+            Order order = new Order((Customer) currentUser, selectedWarehouse, OrderStatus.WAITING_FOR_PAYMENT.toString());
             customHib.create(order);
             List<Cart> userCartList = customHib.getUserCarts(currentUser.getId());
             OrderDetails newOrderDetails;

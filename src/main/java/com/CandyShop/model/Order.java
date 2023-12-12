@@ -34,4 +34,10 @@ public class Order {
         this.warehouse = warehouse;
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Order id: " + id +
+                " status: " + status;
+    }
 }
