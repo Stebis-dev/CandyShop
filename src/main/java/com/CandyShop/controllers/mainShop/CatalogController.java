@@ -121,7 +121,6 @@ public class CatalogController implements CatalogHandler {
             }
 
             productPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                double width = productPane.getWidth();
                 productContainer.setPrefWrapLength(productPane.getWidth());
                 adjustCardSizes(productPane.getWidth());
             });

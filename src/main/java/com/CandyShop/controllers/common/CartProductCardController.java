@@ -67,4 +67,9 @@ public class CartProductCardController {
     public void deleteProductFromCart() {
         cartHandler.deleteCart(cart);
     }
+
+    public void setCardSize(double width) {
+        root.setPrefWidth(width);
+
+    }
 }

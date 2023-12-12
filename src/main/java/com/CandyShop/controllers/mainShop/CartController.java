@@ -68,22 +68,38 @@ public class CartController implements CartHandler {
         }
     }
 
+    private void adjustCardSizes(double containerWidth) {
+        double scrollWidth = cartPane.getWidth() - cartPane.getViewportBounds().getWidth();
+        double cardWidth = containerWidth - scrollWidth;
+        System.out.println(scrollWidth + " " + containerWidth + " " + cartPane.getWidth() + " " + cartPane.getViewportBounds().getWidth());
+        for (CartProductCardController cardController : cartProductsControllers) {
+            cardController.setCardSize(cardWidth);
+        }
+    }
+
     private void loadCards() {
         try {
             cartContainer = new FlowPane(Orientation.VERTICAL, CARD_SPACING, CARD_SPACING);
-            cartContainer.setAlignment(Pos.CENTER);
-            cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                double width = newValue.getWidth();
-                cartContainer.setPrefWidth(cartPane.getWidth());
-                cartContainer.setPrefHeight(cartPane.getPrefHeight());
-                System.out.println(cartPane.getPrefWidth());
-//                adjustCardSizes(productPane.getWidth());
-            });
+            cartContainer.setAlignment(Pos.TOP_CENTER);
+
 
             for (Cart cart : customHib.getUserCarts(currentUser.getId())) {
                 addCartProductCard(cart);
             }
 
+            double productPaneWidth = cartPane.getWidth();
+
+            if (productPaneWidth >= 0) {
+                cartContainer.setPrefWrapLength(productPaneWidth);
+                adjustCardSizes(cartPane.getWidth());
+            }
+
+
+            cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                cartContainer.setPrefWrapLength(newValue.getWidth());
+                double containerWidth = newValue.getWidth();
+                adjustCardSizes(containerWidth);
+            });
 
             cartPane.setContent(cartContainer);
         } catch (NullPointerException ignored) {
@@ -113,6 +129,7 @@ public class CartController implements CartHandler {
                 customHib.delete(Cart.class, cart.getId());
             }
             loadCartList();
+            loadCards();
             loadWarehouseList();
         } catch (Exception ignored) {
 
