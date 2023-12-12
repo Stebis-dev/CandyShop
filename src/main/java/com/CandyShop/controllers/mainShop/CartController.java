@@ -71,11 +71,12 @@ public class CartController implements CartHandler {
     private void loadCards() {
         try {
             cartContainer = new FlowPane(Orientation.VERTICAL, CARD_SPACING, CARD_SPACING);
-            cartContainer.setAlignment(Pos.TOP_CENTER);
-
+            cartContainer.setAlignment(Pos.CENTER);
             cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
                 double width = newValue.getWidth();
-                cartContainer.setPrefWrapLength(width);
+                cartContainer.setPrefWidth(cartPane.getWidth());
+                cartContainer.setPrefHeight(cartPane.getPrefHeight());
+                System.out.println(cartPane.getPrefWidth());
 //                adjustCardSizes(productPane.getWidth());
             });
 

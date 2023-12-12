@@ -20,22 +20,22 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String comment;
+    protected String comment;
     private Integer parentID;
 
     @OneToOne
-    private User user;
+    protected User user;
     @OneToOne
     private Order order;
     @OneToOne
-    private Product product;
+    protected Product product;
 
     @Transient
     public List<Comment> childrenComment = new ArrayList<>();
 
-    private LocalDateTime dateCreated;
+    protected LocalDateTime dateCreated;
 
-    private int commentLevel;
+    protected int commentLevel;
 
     public Comment(String comment, Integer parentID, User user, Product product, LocalDateTime dateCreated, int commentLevel) {
         this.comment = comment;
@@ -52,12 +52,12 @@ public class Comment {
 
     @Override
     public String toString() {
-        String commentB = user.getName() + "(" + dateCreated.getHour() + ":" + dateCreated.getMinute() + "): " + comment;
-        String commentStart = "";
-        for (int i = 0; i < commentLevel; i++) {
-            commentStart += "\t";
+        String commentHeader = dateCreated.getHour() + ":" + dateCreated.getMinute() + " " + user.getName().toUpperCase();
+        String commentBody = comment;
+        String commentLevel = "";
+        for (int i = 0; i < this.commentLevel; i++) {
+            commentLevel += "\t";
         }
-        commentStart += commentB;
-        return commentStart;
+        return commentLevel + commentHeader + "\n" + commentLevel + commentBody;
     }
 }

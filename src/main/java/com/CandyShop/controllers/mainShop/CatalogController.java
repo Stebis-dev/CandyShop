@@ -124,11 +124,6 @@ public class CatalogController implements CatalogHandler {
                 double width = productPane.getWidth();
                 productContainer.setPrefWrapLength(productPane.getWidth());
                 adjustCardSizes(productPane.getWidth());
-//                productPane.getViewportBounds().getWidth();
-                System.out.println("productPane.getViewportBounds().getWidth()" + productPane.getViewportBounds().getWidth());
-                System.out.println("productPane.getWidth() " + productPane.getWidth());
-                System.out.println("productPane.getPrefViewportWidth() " + productPane.getPrefViewportWidth());
-
             });
 
             productPane.setContent(productContainer);
