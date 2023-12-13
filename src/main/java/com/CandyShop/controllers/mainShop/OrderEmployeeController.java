@@ -45,6 +45,10 @@ public class OrderEmployeeController {
         customHib = new CustomHib(entityManagerFactory);
     }
 
+    public void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
     public void loadData() {
         loadOrderList();
         statusLabel.setText("Status: ");
@@ -90,9 +94,6 @@ public class OrderEmployeeController {
         }
     }
 
-    public void setCurrentUser(User user) {
-        currentUser = user;
-    }
 
     public void submitMessage() {
         Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
