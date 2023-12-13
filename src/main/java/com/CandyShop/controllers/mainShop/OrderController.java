@@ -12,7 +12,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderController {
 
@@ -108,7 +110,18 @@ public class OrderController {
     }
 
     public void deleteSelectedComment() {
+        Comment selectedComment = chatList.getSelectionModel().getSelectedItem();
 
+        if (selectedComment != null) {
+            if (selectedComment.getUser().getId() == currentUser.getId() || (currentUser instanceof Manager && ((Manager) currentUser).isAdmin())) {
+
+                selectedComment.setComment("<Deleted>");
+                customHib.update(selectedComment);
+                loadComments();
+            }
+        }
+
+        loadComments();
     }
 
     public void cancelOrder() {
