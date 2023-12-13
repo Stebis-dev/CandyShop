@@ -1,29 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="668.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.CartController">
-   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="438.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.CartController">
+   <HBox alignment="CENTER" prefHeight="235.0" prefWidth="688.0" AnchorPane.bottomAnchor="189.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
       <children>
-         <ScrollPane fx:id="cartPane" hbarPolicy="NEVER" maxHeight="600.0" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="660.0" />
-          <ListView fx:id="orderWarehouseList" prefHeight="86.0" prefWidth="122.0">
-            <VBox.margin>
-               <Insets top="20.0" />
-            </VBox.margin>
-         </ListView>
-          <Button mnemonicParsing="false" onAction="#createOrder" text="Create order">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin>
-         </Button>
+         <ScrollPane fx:id="cartPane" hbarPolicy="NEVER" maxHeight="600.0" maxWidth="1.7976931348623157E308" prefHeight="235.0" prefWidth="670.0" />
       </children>
-      <padding>
-         <Insets top="10.0" />
-      </padding>
-   </VBox>
+   </HBox>
+    <ListView fx:id="orderWarehouseList" layoutX="563.0" layoutY="282.0" prefHeight="127.0" prefWidth="122.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+    <Button layoutX="471.0" layoutY="383.0" mnemonicParsing="false" onAction="#createOrder" text="Create order" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="146.6" />
 </AnchorPane>
