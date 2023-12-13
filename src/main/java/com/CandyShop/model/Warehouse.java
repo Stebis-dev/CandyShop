@@ -25,10 +25,12 @@ public class Warehouse implements Serializable {
     private String title;
     private String address;
 
-    
-    @ManyToMany(mappedBy = "worksAtWarehouse", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Manager> managers;
+    @OneToMany(mappedBy = "warehouse")
+    private List<WarehouseInventory> warehouseInventoryList;
+
+//    @ManyToMany(mappedBy = "worksAtWarehouse", cascade = CascadeType.ALL)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Manager> managers;
 
 //    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
 //    @LazyCollection(LazyCollectionOption.FALSE)
@@ -38,7 +40,6 @@ public class Warehouse implements Serializable {
     public Warehouse(String title, String address) {
         this.title = title;
         this.address = address;
-        this.managers = new ArrayList<>();
     }
 
     @Override

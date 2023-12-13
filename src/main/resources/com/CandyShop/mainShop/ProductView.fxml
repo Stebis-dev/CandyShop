@@ -2,10 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,165 +13,151 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.ProductController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="910.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.ProductController">
     <children>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
-                    maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
-                            minWidth="0.0">
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
                     <children>
-                        <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
-                              maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
-                                      maxWidth="1.7976931348623157E308">
+                                <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                     <children>
-                                        <ImageView fx:id="productImage" fitHeight="300.0" fitWidth="300.0"
-                                                   pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="productImage" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                                             <HBox.margin>
-                                                <Insets right="50.0" top="50.0"/>
+                                                <Insets right="50.0" top="50.0" />
                                             </HBox.margin>
                                         </ImageView>
                                         <VBox maxWidth="500.0">
                                             <children>
-                                                <Label fx:id="productName" alignment="TOP_LEFT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="100.0" text="Name"
-                                                       wrapText="true">
+                                                <Label fx:id="productName" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" text="Name" wrapText="true">
                                                     <font>
-                                                        <Font name="System Bold" size="20.0"/>
+                                                        <Font name="System Bold" size="20.0" />
                                                     </font>
                                                     <padding>
-                                                        <Insets top="30.0"/>
+                                                        <Insets top="30.0" />
                                                     </padding>
                                                     <VBox.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </VBox.margin>
                                                 </Label>
-                                                <Label fx:id="productPrice" maxWidth="1.7976931348623157E308"
-                                                       prefHeight="18.0" text="Price" wrapText="true">
+                                                <Label fx:id="productPrice" maxWidth="1.7976931348623157E308" prefHeight="18.0" text="Price" wrapText="true">
                                                     <font>
-                                                        <Font name="System Bold" size="16.0"/>
+                                                        <Font name="System Bold" size="16.0" />
                                                     </font>
                                                     <padding>
-                                                        <Insets bottom="10.0" top="10.0"/>
+                                                        <Insets bottom="10.0" top="10.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="productDescription" alignment="TOP_LEFT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="100.0"
-                                                       text="Description" wrapText="true">
+                                                <Label fx:id="productDescription" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" text="Description" wrapText="true">
                                                     <font>
-                                                        <Font size="13.0"/>
+                                                        <Font size="13.0" />
                                                     </font>
                                                     <VBox.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </VBox.margin>
                                                     <padding>
-                                                        <Insets bottom="10.0"/>
+                                                        <Insets bottom="10.0" />
                                                     </padding>
                                                 </Label>
                                                 <HBox prefHeight="19.0" prefWidth="227.0">
                                                     <children>
-                                                        <Button mnemonicParsing="false" onAction="#decreaseAmount"
-                                                                prefHeight="26.0" prefWidth="26.0" text="-"/>
-                                                        <Label fx:id="amountLabel" alignment="CENTER" prefHeight="26.0"
-                                                               prefWidth="32.0" text="100"/>
-                                                        <Button mnemonicParsing="false" onAction="#AddAmount"
-                                                                prefHeight="26.0" prefWidth="26.0" text="+"/>
+                                                        <Button mnemonicParsing="false" onAction="#decreaseAmount" prefHeight="26.0" prefWidth="26.0" text="-" />
+                                                        <Label fx:id="amountLabel" alignment="CENTER" prefHeight="26.0" prefWidth="32.0" text="100" />
+                                                        <Button mnemonicParsing="false" onAction="#AddAmount" prefHeight="26.0" prefWidth="26.0" text="+" />
                                                     </children>
                                                 </HBox>
-                                                <Button mnemonicParsing="false" onAction="#addToCart" prefHeight="26.0"
-                                                        prefWidth="200.0" text="Add to cart">
+                                                <Button mnemonicParsing="false" onAction="#addToCart" prefHeight="26.0" prefWidth="200.0" text="Add to cart">
                                                     <VBox.margin>
-                                                        <Insets bottom="10.0" top="10.0"/>
+                                                        <Insets bottom="10.0" top="10.0" />
                                                     </VBox.margin>
                                                 </Button>
                                                 <Label maxWidth="1.7976931348623157E308" text="Description">
                                                     <font>
-                                                        <Font name="System Bold" size="13.0"/>
+                                                        <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="productIngredients" alignment="TOP_LEFT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="50.0"
-                                                       text="Ingredients" wrapText="true">
+                                                <Label fx:id="productIngredients" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="Ingredients" wrapText="true">
                                                     <font>
-                                                        <Font size="13.0"/>
+                                                        <Font size="13.0" />
                                                     </font>
                                                     <VBox.margin>
-                                                        <Insets top="5.0"/>
+                                                        <Insets top="5.0" />
                                                     </VBox.margin>
                                                     <padding>
-                                                        <Insets bottom="10.0"/>
+                                                        <Insets bottom="10.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="productNutritionalValue" alignment="TOP_LEFT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="50.0"
-                                                       text="NutritionalValue" wrapText="true">
+                                                <Label fx:id="productNutritionalValue" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="NutritionalValue" wrapText="true">
                                                     <font>
-                                                        <Font size="13.0"/>
+                                                        <Font size="13.0" />
                                                     </font>
                                                     <VBox.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </VBox.margin>
                                                     <padding>
-                                                        <Insets bottom="10.0"/>
+                                                        <Insets bottom="10.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label maxWidth="1.7976931348623157E308" prefHeight="4.0"
-                                                       prefWidth="227.0" text="Additional information" wrapText="true">
+                                                <Label maxWidth="1.7976931348623157E308" prefHeight="4.0" prefWidth="227.0" text="Additional information" wrapText="true">
                                                     <font>
-                                                        <Font name="System Bold" size="13.0"/>
+                                                        <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="productWeight" maxWidth="1.7976931348623157E308"
-                                                       text="Weight">
+                                                <Label fx:id="productWeight" maxWidth="1.7976931348623157E308" text="Weight">
                                                     <VBox.margin>
-                                                        <Insets top="5.0"/>
+                                                        <Insets top="5.0" />
                                                     </VBox.margin>
                                                 </Label>
-                                                <Label fx:id="productCountryOfOrigin" maxWidth="1.7976931348623157E308"
-                                                       text="CountryOfOrigin">
+                                                <Label fx:id="productCountryOfOrigin" maxWidth="1.7976931348623157E308" text="CountryOfOrigin">
                                                     <VBox.margin>
-                                                        <Insets top="5.0"/>
+                                                        <Insets top="5.0" />
                                                     </VBox.margin>
                                                 </Label>
-                                                <Label fx:id="productStorageConditions"
-                                                       maxWidth="1.7976931348623157E308" text="StorageConditions">
+                                                <Label fx:id="productStorageConditions" maxWidth="1.7976931348623157E308" text="StorageConditions">
                                                     <VBox.margin>
-                                                        <Insets top="5.0"/>
+                                                        <Insets top="5.0" />
                                                     </VBox.margin>
                                                 </Label>
                                             </children>
                                         </VBox>
                                     </children>
                                 </HBox>
-                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="4.0"
-                                       prefWidth="227.0" text="Reviews" wrapText="true">
+                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="4.0" prefWidth="227.0" text="Reviews" wrapText="true">
                                     <font>
-                                        <Font name="System Bold" size="13.0"/>
+                                        <Font name="System Bold" size="13.0" />
                                     </font>
                                     <VBox.margin>
-                                        <Insets top="50.0"/>
+                                        <Insets top="50.0" />
                                     </VBox.margin>
                                 </Label>
-                                <ListView fx:id="reviewList" maxWidth="400.0" prefHeight="200.0" prefWidth="380.0"/>
-                                <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="400.0">
+                                <ListView fx:id="reviewList" maxWidth="520.0" onMouseClicked="#selectedComment" prefHeight="200.0" prefWidth="520.0" />
+                                <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="518.0" prefHeight="38.0" prefWidth="518.0">
                                     <children>
-                                        <ComboBox fx:id="reviewScore" maxHeight="1.7976931348623157E308"/>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Slider fx:id="reviewScore" blockIncrement="2.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+                                    <Button mnemonicParsing="false" onAction="#unSelect" text="Unselect" />
+                                 </children>
+                              </VBox>
                                         <TextArea fx:id="reviewInputField" prefHeight="0.0" prefWidth="327.0">
                                             <HBox.margin>
-                                                <Insets/>
+                                                <Insets />
                                             </HBox.margin>
                                         </TextArea>
-                                        <Button fx:id="reviewSubmit" maxHeight="1.7976931348623157E308"
-                                                mnemonicParsing="false" onAction="#submitReview" prefWidth="108.0"
-                                                text="Send"/>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                              <Button fx:id="reviewSubmit" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#submitReview" prefWidth="108.0" text="Send" />
+                                    <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteSelectedComment" prefWidth="108.0" text="Delete">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
                                     </children>
                                     <VBox.margin>
-                                        <Insets bottom="50.0" top="20.0"/>
+                                        <Insets bottom="50.0" top="20.0" />
                                     </VBox.margin>
                                 </HBox>
                             </children>

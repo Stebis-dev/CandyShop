@@ -34,6 +34,12 @@ public class WarehouseController {
 
     }
 
+    public void loadData() {
+        loadWarehouseList();
+        loadWarehouseData();
+        loadWarehouseInventoryData();
+    }
+
     private void loadWarehouseList() {
         warehouseList.getItems().clear();
         warehouseList.getItems().addAll(customHib.getAllRecords(Warehouse.class));
@@ -138,4 +144,6 @@ public class WarehouseController {
             productAmount.setText(String.valueOf(selectedWarehouseInventory.getAmount()));
         }
     }
+
+
 }

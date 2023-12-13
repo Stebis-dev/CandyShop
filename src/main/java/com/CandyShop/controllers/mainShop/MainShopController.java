@@ -32,6 +32,8 @@ public class MainShopController implements Initializable, MainShopHandler {
     public Tab commentTab;
     @FXML
     public Tab OrderTab;
+    @FXML
+    public Tab orderEmployeeTab;
 
     @FXML
     private ProductController productSectionController;
@@ -49,6 +51,9 @@ public class MainShopController implements Initializable, MainShopHandler {
     private CommentController commentSectionController;
     @FXML
     private UserController userSectionController;
+    @FXML
+    private OrderEmployeeController orderEmployeeSectionController;
+
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
     private CustomHib customHib;
@@ -90,11 +95,17 @@ public class MainShopController implements Initializable, MainShopHandler {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (warehouseTab.isSelected()) {
                 warehouseSectionController.setEntityManagerFactory(entityManagerFactory);
+                warehouseSectionController.loadData();
             } else if (commentTab.isSelected()) {
                 commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
-                tabPane.getTabs().remove(productCreationTab);
+                orderSectionController.setCurrentUser(currentUser);
+                orderSectionController.loadData();
+            } else if (orderEmployeeTab.isSelected()) {
+                orderEmployeeSectionController.setEntityManagerFactory(entityManagerFactory);
+                orderEmployeeSectionController.setCurrentUser(currentUser);
+                orderEmployeeSectionController.loadData();
             }
         } catch (NullPointerException ignored) {
 

@@ -68,32 +68,40 @@ public class CartController implements CartHandler {
         }
     }
 
+    private void adjustCardSizes(double containerWidth) {
+        double scrollWidth = cartPane.getWidth() - cartPane.getViewportBounds().getWidth();
+        double cardWidth = containerWidth - scrollWidth;
+        System.out.println(scrollWidth + " " + containerWidth + " " + cartPane.getWidth() + " " + cartPane.getViewportBounds().getWidth());
+        for (CartProductCardController cardController : cartProductsControllers) {
+            cardController.setCardSize(cardWidth);
+        }
+    }
+
     private void loadCards() {
         try {
             cartContainer = new FlowPane(Orientation.VERTICAL, CARD_SPACING, CARD_SPACING);
             cartContainer.setAlignment(Pos.TOP_CENTER);
 
-            cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
-                double width = newValue.getWidth();
-                cartContainer.setPrefWrapLength(width);
-//                adjustCardSizes(productPane.getWidth());
-            });
 
             for (Cart cart : customHib.getUserCarts(currentUser.getId())) {
                 addCartProductCard(cart);
             }
 
+            double productPaneWidth = cartPane.getWidth();
+
+            if (productPaneWidth >= 0) {
+                cartContainer.setPrefWrapLength(productPaneWidth);
+                adjustCardSizes(cartPane.getWidth());
+            }
+
+
+            cartPane.viewportBoundsProperty().addListener((observable, oldValue, newValue) -> {
+                cartContainer.setPrefWrapLength(newValue.getWidth());
+                double containerWidth = newValue.getWidth();
+                adjustCardSizes(containerWidth);
+            });
 
             cartPane.setContent(cartContainer);
-        } catch (NullPointerException ignored) {
-        }
-    }
-
-    public void deleteFromCart() {
-        try {
-            Cart selectCart = userCart.getSelectionModel().getSelectedItem();
-            customHib.delete(Cart.class, selectCart.getId());
-            loadCartList();
         } catch (NullPointerException ignored) {
         }
     }
@@ -101,7 +109,7 @@ public class CartController implements CartHandler {
     public void createOrder() {
         try {
             Warehouse selectedWarehouse = orderWarehouseList.getSelectionModel().getSelectedItem();
-            Order order = new Order((Customer) currentUser, selectedWarehouse, "Processing");
+            Order order = new Order((Customer) currentUser, selectedWarehouse, OrderStatus.WAITING_FOR_PAYMENT);
             customHib.create(order);
             List<Cart> userCartList = customHib.getUserCarts(currentUser.getId());
             OrderDetails newOrderDetails;
@@ -112,6 +120,7 @@ public class CartController implements CartHandler {
                 customHib.delete(Cart.class, cart.getId());
             }
             loadCartList();
+            loadCards();
             loadWarehouseList();
         } catch (Exception ignored) {
 

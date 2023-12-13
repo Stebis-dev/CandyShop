@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,15 +21,31 @@ public class Order {
 
     @OneToOne
     Customer customer;
-
+    @OneToOne
+    Manager manager;
     @OneToOne
     Warehouse warehouse;
 
-    String status;
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetails> orderDetails;
 
-    public Order(Customer customer, Warehouse warehouse, String status) {
+    OrderStatus status;
+
+    public Order(Customer customer, Warehouse warehouse, OrderStatus status) {
         this.customer = customer;
         this.warehouse = warehouse;
         this.status = status;
+    }
+
+    public Order(Manager manager, Warehouse warehouse, OrderStatus status) {
+        this.manager = manager;
+        this.warehouse = warehouse;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order id: " + id +
+                " status: " + status;
     }
 }

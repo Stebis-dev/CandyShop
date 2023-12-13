@@ -1,6 +1,7 @@
 package com.CandyShop.hibernateControllers;
 
 import com.CandyShop.model.*;
+import com.CandyShop.model.Order;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -60,6 +61,10 @@ public class CustomHib extends GenericHib {
 
             deleteProductFromCart(productId);
             deleteProductFromWarehouse(productId);
+
+            for (Comment comment : getProductComments(productId)) {
+                delete(Comment.class, comment.getId());
+            }
 
             var product = em.find(Product.class, productId);
             em.remove(product);
@@ -154,27 +159,7 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
     }
-
-//    public List<Product> getProductsFromWarehouse(int warehouseId) {
-//        EntityManager em = null;
-//        try {
-//            em = getEntityManager();
-//            CriteriaBuilder cb = em.getCriteriaBuilder();
-//
-//            CriteriaQuery<Product> query = cb.createQuery(Product.class);
-//            Root<WarehouseInventory> root = query.from(WarehouseInventory.class);
-//            Join<WarehouseInventory, Product> cartProductJoin = root.join("product");
-//            query.select(cartProductJoin).where(cb.equal(root.get("warehouse").get("id"), warehouseId));
-//
-//            TypedQuery<Product> typedQuery = em.createQuery(query);
-//
-//            return typedQuery.getResultList();
-//        } catch (NullPointerException e) {
-//            return null;
-//        } finally {
-//            if (em != null) em.close();
-//        }
-//    }
+    //TODO create customHib for getCartsByProduct(int productID)
 
     public List<WarehouseInventory> getWarehouseInventory(int warehouseId) {
         EntityManager em = null;
@@ -195,60 +180,6 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
     }
-
-//    public void deleteProductFromCart(int userId, int productId) {
-//        EntityManager em = null;
-//        try {
-//            em = getEntityManager();
-//            em.getTransaction().begin();
-//
-//            CriteriaBuilder cb = em.getCriteriaBuilder();
-//            CriteriaDelete<Cart> deleteQuery = cb.createCriteriaDelete(Cart.class);
-//            Root<Cart> root = deleteQuery.from(Cart.class);
-//
-//            Predicate whereClause = cb.and(
-//                    cb.equal(root.get("customer").get("id"), userId),
-//                    cb.equal(root.get("product").get("id"), productId)
-//            );
-//
-//            deleteQuery.where(whereClause);
-//
-//            em.createQuery(deleteQuery).executeUpdate();
-//
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            System.out.println("Null value encountered");
-//        } finally {
-//            if (em != null) em.close();
-//        }
-//    }
-//
-//    public void deleteProductFromWarehouse(int warehouseId, int productId) {
-//        EntityManager em = null;
-//        try {
-//            em = getEntityManager();
-//            em.getTransaction().begin();
-//
-//            CriteriaBuilder cb = em.getCriteriaBuilder();
-//            CriteriaDelete<WarehouseInventory> deleteQuery = cb.createCriteriaDelete(WarehouseInventory.class);
-//            Root<WarehouseInventory> root = deleteQuery.from(WarehouseInventory.class);
-//
-//            Predicate whereClause = cb.and(
-//                    cb.equal(root.get("warehouse").get("id"), warehouseId),
-//                    cb.equal(root.get("product").get("id"), productId)
-//            );
-//
-//            deleteQuery.where(whereClause);
-//
-//            em.createQuery(deleteQuery).executeUpdate();
-//
-//            em.getTransaction().commit();
-//        } catch (NullPointerException e) {
-//            System.out.println("Null value encountered");
-//        } finally {
-//            if (em != null) em.close();
-//        }
-//    }
 
     public void deleteComment(int commentId) {
         EntityManager em = null;
@@ -303,6 +234,44 @@ public class CustomHib extends GenericHib {
         }
     }
 
+    public List<Order> getUsersOrder(int userId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Order> query = cb.createQuery(Order.class);
+            Root<Order> root = query.from(Order.class);
+            query.select(root).where(cb.equal(root.get("customer").get("id"), userId));
+            TypedQuery<Order> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<Order> getManagerOrder(int managerId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Order> query = cb.createQuery(Order.class);
+            Root<Order> root = query.from(Order.class);
+            query.select(root).where(cb.equal(root.get("manager").get("id"), managerId));
+            TypedQuery<Order> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
     public List<OrderDetails> getOrderDetails(int orderId) {
         EntityManager em = null;
         try {
@@ -343,4 +312,49 @@ public class CustomHib extends GenericHib {
         }
     }
 
+    public List<Comment> getOrderComments(int oderId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Comment> query = cb.createQuery(Comment.class);
+            Root<Comment> root = query.from(Comment.class);
+            query.select(root).where(cb.equal(root.get("order").get("id"), oderId));
+
+            TypedQuery<Comment> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteOrder(int orderId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            var order = em.find(Order.class, orderId);
+
+            List<OrderDetails> orderDetails = getOrderDetails(orderId);
+            for (OrderDetails orderDetail : orderDetails) {
+                delete(OrderDetails.class, orderDetail.getId());
+            }
+            List<Comment> comments = getOrderComments(orderId);
+            for (Comment comment : comments) {
+                deleteComment(comment.getId());
+            }
+
+            em.remove(order);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
 }

@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class ProductCreationController {
     @FXML
@@ -63,6 +66,15 @@ public class ProductCreationController {
         clearProductData();
         loadProductListManager();
         loadProductType();
+//        imagePath = "../../../../../resources/images/product_default.png";
+        try {
+            URL resourceUrl = getClass().getResource("/images/product_default.png");
+            assert resourceUrl != null;
+            imagePath = Paths.get(resourceUrl.toURI()).toAbsolutePath().toString();
+            imagePreview.setImage(new Image(imagePath));
+        } catch (Exception e) {
+
+        }
     }
 
 
