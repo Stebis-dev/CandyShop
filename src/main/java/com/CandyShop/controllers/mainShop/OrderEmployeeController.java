@@ -34,6 +34,8 @@ public class OrderEmployeeController {
     public Label orderWarehouse;
     @FXML
     public ListView<Warehouse> warehouseList;
+    @FXML
+    public Button deleteOrderButton;
 
     private CustomHib customHib;
 
@@ -75,6 +77,13 @@ public class OrderEmployeeController {
             warehouseList.getItems().clear();
             warehouseList.getItems().addAll(customHib.getAllRecords(Warehouse.class));
             loadComments();
+
+            if (selectedOrder.getStatus().equals(OrderStatus.COMPLETE) ||
+                    selectedOrder.getStatus().equals(OrderStatus.PROCESSING)) {
+                deleteOrderButton.setDisable(true);
+            } else {
+                deleteOrderButton.setDisable(false);
+            }
 
         } catch (Exception ignored) {
 
