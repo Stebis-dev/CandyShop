@@ -109,7 +109,7 @@ public class CartController implements CartHandler {
     public void createOrder() {
         try {
             Warehouse selectedWarehouse = orderWarehouseList.getSelectionModel().getSelectedItem();
-            Order order = new Order((Customer) currentUser, selectedWarehouse, OrderStatus.WAITING_FOR_PAYMENT.toString());
+            Order order = new Order((Customer) currentUser, selectedWarehouse, OrderStatus.WAITING_FOR_PAYMENT);
             customHib.create(order);
             List<Cart> userCartList = customHib.getUserCarts(currentUser.getId());
             OrderDetails newOrderDetails;

@@ -22,15 +22,23 @@ public class Order {
     @OneToOne
     Customer customer;
     @OneToOne
+    Manager manager;
+    @OneToOne
     Warehouse warehouse;
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails;
 
-    String status;
+    OrderStatus status;
 
-    public Order(Customer customer, Warehouse warehouse, String status) {
+    public Order(Customer customer, Warehouse warehouse, OrderStatus status) {
         this.customer = customer;
+        this.warehouse = warehouse;
+        this.status = status;
+    }
+
+    public Order(Manager manager, Warehouse warehouse, OrderStatus status) {
+        this.manager = manager;
         this.warehouse = warehouse;
         this.status = status;
     }

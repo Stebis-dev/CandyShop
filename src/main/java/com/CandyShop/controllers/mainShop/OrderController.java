@@ -41,7 +41,6 @@ public class OrderController {
 
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         customHib = new CustomHib(entityManagerFactory);
-
     }
 
     public void loadData() {
@@ -58,18 +57,18 @@ public class OrderController {
     public void loadOrderDetailList() {
         try {
             Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
-            statusLabel.setText("Status: " + selectedOrder.getStatus());
+            statusLabel.setText("Status: " + selectedOrder.getStatus().toString());
             orderDetailList.getItems().clear();
             orderDetailList.getItems().addAll(customHib.getOrderDetails(selectedOrder.getId()));
 
             cancelButton.setDisable(false);
             completeButton.setDisable(false);
 
-            if (selectedOrder.getStatus().equals(OrderStatus.CANCELED.toString()) ||
-                    selectedOrder.getStatus().equals(OrderStatus.COMPLETE.toString())) {
+            if (selectedOrder.getStatus().equals(OrderStatus.CANCELED) ||
+                    selectedOrder.getStatus().equals(OrderStatus.COMPLETE)) {
                 cancelButton.setDisable(true);
                 completeButton.setDisable(true);
-            } else if (selectedOrder.getStatus().equals(OrderStatus.PROCESSING.toString())) {
+            } else if (selectedOrder.getStatus().equals(OrderStatus.PROCESSING)) {
                 completeButton.setDisable(true);
             } else {
                 cancelButton.setDisable(false);
@@ -127,7 +126,7 @@ public class OrderController {
     public void cancelOrder() {
         Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
         int selectedIndex = orderList.getSelectionModel().getSelectedIndex();
-        selectedOrder.setStatus(OrderStatus.CANCELED.toString());
+        selectedOrder.setStatus(OrderStatus.CANCELED);
         customHib.update(selectedOrder);
         loadOrderList();
         orderList.getSelectionModel().select(selectedIndex);
@@ -138,7 +137,7 @@ public class OrderController {
     public void completeOrder() {
         Order selectedOrder = orderList.getSelectionModel().getSelectedItem();
         int selectedIndex = orderList.getSelectionModel().getSelectedIndex();
-        selectedOrder.setStatus(OrderStatus.PROCESSING.toString());
+        selectedOrder.setStatus(OrderStatus.PROCESSING);
         customHib.update(selectedOrder);
         loadOrderList();
         orderList.getSelectionModel().select(selectedIndex);

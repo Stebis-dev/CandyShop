@@ -61,6 +61,10 @@ public class CustomHib extends GenericHib {
 
             deleteProductFromCart(productId);
             deleteProductFromWarehouse(productId);
+    
+            for (Comment comment : getProductComments(productId)) {
+                delete(Comment.class, comment.getId());
+            }
 
             var product = em.find(Product.class, productId);
             em.remove(product);
@@ -71,6 +75,8 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
     }
+    // TODO if deleting order comments wont be deleted, but for some reason when you delete product, the product
+    //  comments gets deleted
 
     public void deleteProductFromCart(int productId) {
         EntityManager em = null;
@@ -249,6 +255,25 @@ public class CustomHib extends GenericHib {
         }
     }
 
+    public List<Order> getManagerOrder(int managerId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Order> query = cb.createQuery(Order.class);
+            Root<Order> root = query.from(Order.class);
+            query.select(root).where(cb.equal(root.get("manager").get("id"), managerId));
+            TypedQuery<Order> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (NullPointerException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
     public List<OrderDetails> getOrderDetails(int orderId) {
         EntityManager em = null;
         try {
@@ -304,6 +329,32 @@ public class CustomHib extends GenericHib {
             return typedQuery.getResultList();
         } catch (NullPointerException e) {
             return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public void deleteOrder(int orderId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+
+            var order = em.find(Order.class, orderId);
+
+            List<OrderDetails> orderDetails = getOrderDetails(orderId);
+            for (OrderDetails orderDetail : orderDetails) {
+                delete(OrderDetails.class, orderDetail.getId());
+            }
+            List<Comment> comments = getOrderComments(orderId);
+            for (Comment comment : comments) {
+                deleteComment(comment.getId());
+            }
+
+            em.remove(order);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Null value encountered");
         } finally {
             if (em != null) em.close();
         }
