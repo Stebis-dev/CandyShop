@@ -61,7 +61,7 @@ public class CustomHib extends GenericHib {
 
             deleteProductFromCart(productId);
             deleteProductFromWarehouse(productId);
-    
+
             for (Comment comment : getProductComments(productId)) {
                 delete(Comment.class, comment.getId());
             }
@@ -75,8 +75,6 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
     }
-    // TODO if deleting order comments wont be deleted, but for some reason when you delete product, the product
-    //  comments gets deleted
 
     public void deleteProductFromCart(int productId) {
         EntityManager em = null;
