@@ -143,10 +143,6 @@ public class ProductCreationController {
 
     public void deleteProduct() throws NullPointerException {
         Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
-        for (Comment comment : customHib.getProductComments(selectedProduct.getId())) {
-            customHib.deleteComment(comment.getId());
-        }
-
         customHib.deleteProduct(selectedProduct.getId());
         loadProductListManager();
     }
