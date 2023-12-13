@@ -108,7 +108,7 @@ public class ProductController {
             }
         } catch (Exception ignored) {
             if (product != null) {
-                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product);
+                Cart cart = new Cart(LocalDate.now(), ((Customer) currentUser), product, amount);
                 customHib.create(cart);
             }
         }
