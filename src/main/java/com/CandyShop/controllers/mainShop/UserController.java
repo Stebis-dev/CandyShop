@@ -53,6 +53,11 @@ public class UserController {
 
     }
 
+    public void loadData() {
+        loadUsers();
+        loadManagers();
+    }
+
     private void loadUsers() {
         List<Customer> customersList = customHib.getAllRecords(Customer.class);
         List<CustomerTableGuidelines> customerTableGuidelinesList = customersList.stream()

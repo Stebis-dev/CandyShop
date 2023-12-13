@@ -50,8 +50,6 @@ public class MainShopController implements Initializable, MainShopHandler {
     @FXML
     private OrderController orderSectionController;
     @FXML
-    private CommentController commentSectionController;
-    @FXML
     private UserController userSectionController;
     @FXML
     private OrderEmployeeController orderEmployeeSectionController;
@@ -101,8 +99,6 @@ public class MainShopController implements Initializable, MainShopHandler {
             } else if (warehouseTab.isSelected()) {
                 warehouseSectionController.setEntityManagerFactory(entityManagerFactory);
                 warehouseSectionController.loadData();
-            } else if (commentTab.isSelected()) {
-                commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
                 orderSectionController.setCurrentUser(currentUser);

@@ -161,13 +161,16 @@ public class DetailOrderController {
                     }
                 }
             }
+            System.out.println(productAmount);
+
             double sumOfProducts = 0;
             for (Product product : customHib.getAllRecords(Product.class)) {
                 if (productAmount.containsKey(product.getName())) {
-                    productAmount.put(product.getName(), productAmount.get(product.getName()) * product.getPrice());
                     sumOfProducts += productAmount.get(product.getName()) * product.getPrice();
+                    productAmount.put(product.getName(), productAmount.get(product.getName()) * product.getPrice());
                 }
             }
+            System.out.println(productAmount);
             ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
 
