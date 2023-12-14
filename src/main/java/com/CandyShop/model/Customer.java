@@ -19,22 +19,11 @@ public class Customer extends User {
     private String address;
     private String cardNo;
 
-//    @OneToOne
-//    Cart cart;
-
-//    public Customer(String login, String password, LocalDate birthDate, String name, String surname, String address, String cardNo, Cart cart) {
-//        super(login, password, birthDate, name, surname);
-//        this.address = address;
-//        this.cardNo = cardNo;
-//        this.cart = cart;
-//    }
-
     public Customer(String login, String password, LocalDate birthDate, String name, String surname, String address, String cardNo) {
         super(login, password, birthDate, name, surname);
         this.address = address;
         this.cardNo = cardNo;
     }
-
 
     @Override
     public String toString() {
@@ -46,6 +35,4 @@ public class Customer extends User {
                 ", birthDate=" + birthDate +
                 '}';
     }
-
-
 }

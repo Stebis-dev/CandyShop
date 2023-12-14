@@ -1,12 +1,14 @@
 package com.CandyShop.controllers.registration;
 
 import com.CandyShop.StartGui;
+import com.CandyShop.controllers.mainShop.MainShopController;
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.Customer;
 import com.CandyShop.model.Manager;
 import com.CandyShop.model.User;
 import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,22 +53,41 @@ public class RegistrationController implements Initializable {
     public DatePicker employmentDateField;
     @FXML
     public CheckBox isAdminCheck;
+    public Button returnToLoginButton;
+    public Button returnToUserButton;
 
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
+    private User currentUser;
+    private boolean isAdminEdit;
 
     public void setData(EntityManagerFactory entityManagerFactory, boolean isAdministrator) {
+        isAdminEdit = false;
+
         this.entityManagerFactory = entityManagerFactory;
         if (isAdministrator) {
             manegerSelected();
         } else {
             customerSelected();
         }
+        returnToLoginButton.setVisible(true);
+        returnToUserButton.setVisible(false);
     }
 
     public void setData(EntityManagerFactory entityManagerFactory, Manager manager) {
         this.entityManagerFactory = entityManagerFactory;
         toggleFields(customerCheckbox.isSelected(), manager);
+    }
+
+    public void setData(EntityManagerFactory entityManagerFactory, User currentUser) {
+        isAdminEdit = true;
+
+        customerSelected();
+
+        this.currentUser = currentUser;
+        this.entityManagerFactory = entityManagerFactory;
+        returnToLoginButton.setVisible(false);
+        returnToUserButton.setVisible(true);
     }
 
     private void toggleFields(boolean isManager, User manager) {
@@ -110,7 +131,11 @@ public class RegistrationController implements Initializable {
                                 addressField.getText(),
                                 cardNoField.getText());
                         customHib.createUser(user);
-                        returnToLogin();
+                        if (isAdminEdit) {
+                            returnToUser();
+                        } else {
+                            returnToLogin();
+                        }
                     } else {
                         JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,
                                 "Register", "Missing data",
@@ -131,7 +156,11 @@ public class RegistrationController implements Initializable {
                                 employmentDateField.getValue(),
                                 isAdminCheck.isSelected());
                         customHib.createUser(user);
-                        returnToLogin();
+                        if (isAdminEdit) {
+                            returnToUser();
+                        } else {
+                            returnToLogin();
+                        }
                     } else {
                         JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,
                                 "Register", "Missing data",
@@ -180,5 +209,21 @@ public class RegistrationController implements Initializable {
         medCertificateField.setDisable(false);
         employmentDateField.setDisable(false);
         isAdminCheck.setDisable(false);
+    }
+
+    public void returnToUser() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("mainShop/main-shop.fxml"));
+        Parent parent = fxmlLoader.load();
+
+        MainShopController mainShopController = fxmlLoader.getController();
+        mainShopController.setData(entityManagerFactory, currentUser);
+        mainShopController.usersTab.isSelected();
+
+        Scene scene = new Scene(parent);
+        Stage stage = (Stage) loginField.getScene().getWindow();
+        stage.setTitle("CandyShop");
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }

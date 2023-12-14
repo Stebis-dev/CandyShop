@@ -2,6 +2,7 @@ package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
+import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -28,8 +29,6 @@ public class MainShopController implements Initializable, MainShopHandler {
     public Tab warehouseTab;
     @FXML
     public Tab productCreationTab;
-    @FXML
-    public Tab commentTab;
     @FXML
     public Tab OrderTab;
     @FXML
@@ -68,10 +67,25 @@ public class MainShopController implements Initializable, MainShopHandler {
         customHib = new CustomHib(entityManagerFactory);
         this.currentUser = currentUser;
         tabPane.getTabs().remove(selectedProductTab);
-
+        limitAccess();
         loadTabValues();
     }
 
+    private void limitAccess() {
+        if (currentUser instanceof Manager) {
+            tabPane.getTabs().remove(catalogTab);
+            tabPane.getTabs().remove(cartTab);
+            tabPane.getTabs().remove(OrderTab);
+        } else if (currentUser instanceof Customer) {
+            tabPane.getTabs().remove(productCreationTab);
+            tabPane.getTabs().remove(usersTab);
+            tabPane.getTabs().remove(orderEmployeeTab);
+            tabPane.getTabs().remove(detailOrderTab);
+            tabPane.getTabs().remove(warehouseTab);
+        } else {
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Error", "Detected an system error", "Please reinstall the program to fix this problem");
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,6 +109,7 @@ public class MainShopController implements Initializable, MainShopHandler {
                 productCreationSectionController.loadData();
             } else if (usersTab.isSelected()) {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
+                userSectionController.setCurrentUser(currentUser);
                 userSectionController.loadData();
             } else if (warehouseTab.isSelected()) {
                 warehouseSectionController.setEntityManagerFactory(entityManagerFactory);

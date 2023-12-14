@@ -67,14 +67,11 @@ public class Order implements Comparable<Order> {
 
     @Override
     public int compareTo(Order other) {
-        // First, compare based on the manager being null (unassigned orders come first)
         if (this.getManager() == null && other.getManager() != null) {
             return -1;
         } else if (this.getManager() != null && other.getManager() == null) {
             return 1;
         }
-
-        // If both have managers or both are unassigned, compare based on the order age
         boolean thisOldAndUnassigned = this.getManager() == null && ChronoUnit.DAYS.between(this.getDateCreated(), LocalDate.now()) >= 1;
         boolean otherOldAndUnassigned = other.getManager() == null && ChronoUnit.DAYS.between(other.getDateCreated(), LocalDate.now()) >= 1;
 
@@ -83,8 +80,6 @@ public class Order implements Comparable<Order> {
         } else if (!thisOldAndUnassigned && otherOldAndUnassigned) {
             return 1;
         }
-
-        // If both or neither are old and unassigned, consider them equal in this context
         return 0;
     }
 }
