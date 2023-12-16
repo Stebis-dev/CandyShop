@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomHib extends GenericHib {
@@ -353,6 +355,40 @@ public class CustomHib extends GenericHib {
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Null value encountered");
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public List<Order> getFilteredOrders(LocalDate startDate, LocalDate endDate, OrderStatus status, Manager manager) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+
+            CriteriaQuery<Order> query = cb.createQuery(Order.class);
+            Root<Order> order = query.from(Order.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (startDate != null && endDate != null) {
+                predicates.add(cb.between(order.get("dateCreated"), startDate, endDate));
+            }
+
+            if (status != null) {
+                predicates.add(cb.equal(order.get("status"), status));
+            }
+
+            if (manager != null) {
+                predicates.add(cb.equal(order.get("manager"), manager));
+            }
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+            TypedQuery<Order> typedQuery = em.createQuery(query);
+
+            return typedQuery.getResultList();
+        } catch (Exception e) {
+            return null;
         } finally {
             if (em != null) em.close();
         }

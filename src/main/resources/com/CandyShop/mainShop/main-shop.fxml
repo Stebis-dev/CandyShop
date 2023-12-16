@@ -4,42 +4,58 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="483.0" prefWidth="813.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.MainShopController">
+<AnchorPane prefHeight="483.0" prefWidth="813.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.MainShopController">
     <children>
-        <TabPane fx:id="tabPane" prefHeight="483.0" prefWidth="813.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TabPane fx:id="tabPane" prefHeight="483.0" prefWidth="813.0" AnchorPane.bottomAnchor="0.0"
+                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
                 <Tab fx:id="selectedProductTab" onSelectionChanged="#loadTabValues" text="Product">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
+                                    minWidth="0.0">
                             <children>
-                                <fx:include fx:id="productSection" maxHeight="-Infinity" maxWidth="-Infinity" source="ProductView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="productSection" maxHeight="-Infinity" maxWidth="-Infinity"
+                                            source="ProductView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
                 <Tab fx:id="catalogTab" closable="false" onSelectionChanged="#loadTabValues" text="Catalog">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
+                                    minWidth="0.0">
                             <children>
-                                <fx:include fx:id="catalogSection" maxHeight="-Infinity" maxWidth="-Infinity" source="CatalogView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="catalogSection" maxHeight="-Infinity" maxWidth="-Infinity"
+                                            source="CatalogView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
                 <Tab fx:id="cartTab" closable="false" onSelectionChanged="#loadTabValues" text="Cart">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="454.0" prefWidth="401.0">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
+                                    minWidth="0.0" prefHeight="454.0" prefWidth="401.0">
                             <children>
-                                <fx:include fx:id="cartSection" maxHeight="-Infinity" maxWidth="-Infinity" source="CartView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="cartSection" maxHeight="-Infinity" maxWidth="-Infinity"
+                                            source="CartView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="OrderTab" closable="false" onSelectionChanged="#loadTabValues" text="Order">
+                <Tab fx:id="OrderTab" closable="false" onSelectionChanged="#loadTabValues" text="Your orders">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <fx:include fx:id="orderSection" source="OrderView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="orderSection" source="OrderView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -47,33 +63,45 @@
                 <Tab fx:id="warehouseTab" closable="false" onSelectionChanged="#loadTabValues" text="Warehouse">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <fx:include fx:id="warehouseSection" source="WarehouseView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            <fx:include fx:id="warehouseSection" source="WarehouseView.fxml"
+                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="productCreationTab" closable="false" onSelectionChanged="#loadTabValues" text="Product creation">
+                <Tab fx:id="productCreationTab" closable="false" onSelectionChanged="#loadTabValues"
+                     text="Product creation">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
+                                    minWidth="0.0">
                             <children>
-                                <fx:include fx:id="productCreationSection" maxHeight="-Infinity" maxWidth="-Infinity" source="ProductCreationView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="productCreationSection" maxHeight="-Infinity" maxWidth="-Infinity"
+                                            source="ProductCreationView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="orderEmployeeTab" closable="false" onSelectionChanged="#loadTabValues" text="Order">
+                <Tab fx:id="orderEmployeeTab" closable="false" onSelectionChanged="#loadTabValues"
+                     text="Assigned orders">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <fx:include fx:id="orderEmployeeSection" source="OrderEmployeeView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="orderEmployeeSection" source="OrderEmployeeView.fxml"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="commentTab" closable="false" onSelectionChanged="#loadTabValues" text="Comments">
+                <Tab fx:id="detailOrderTab" closable="false" onSelectionChanged="#loadTabValues" text="Orders">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <fx:include fx:id="commentSection" source="CommentView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="detailOrderSection" source="DetailOrdersView.fxml"
+                                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>
@@ -82,7 +110,9 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <fx:include fx:id="userSection" source="UserView.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <fx:include fx:id="userSection" source="UserView.fxml" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                            AnchorPane.topAnchor="0.0"/>
                             </children>
                         </AnchorPane>
                     </content>

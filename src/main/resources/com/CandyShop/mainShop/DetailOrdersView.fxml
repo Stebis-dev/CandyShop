@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="656.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.CandyShop.controllers.mainShop.DetailOrderController">
+    <PieChart fx:id="pieChart1" animated="false" labelLineLength="200.0" layoutX="510.0" layoutY="40.0" prefHeight="358.0" prefWidth="560.0" title="Amount of product's worth" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="14.0" />
+    <ListView fx:id="orderList" layoutX="14.0" layoutY="217.0" onMouseClicked="#loadAssignedEmployee" prefHeight="211.0" prefWidth="222.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+    <Button layoutX="14.0" layoutY="196.0" mnemonicParsing="false" onAction="#takeOrder" prefHeight="26.0" prefWidth="102.0" text="Take order" AnchorPane.bottomAnchor="292.6" AnchorPane.leftAnchor="14.0" />
+    <Button layoutX="133.0" layoutY="196.0" mnemonicParsing="false" onAction="#assignOrder" prefHeight="26.0" prefWidth="102.0" text="Assign order" AnchorPane.bottomAnchor="292.6" AnchorPane.leftAnchor="133.0" />
+    <ListView fx:id="employeeList" layoutX="14.0" layoutY="14.0" onMouseClicked="#loadAssignedEmployee" prefHeight="173.0" prefWidth="222.0" AnchorPane.bottomAnchor="328.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+    <Label fx:id="orderAssignedStatus" layoutX="14.0" layoutY="265.0" prefHeight="18.0" prefWidth="222.0" text="Avaliable" AnchorPane.bottomAnchor="231.6" AnchorPane.leftAnchor="14.0" />
+    <Button layoutX="14.0" layoutY="230.0" mnemonicParsing="false" onAction="#clearAssigned" prefHeight="26.0" prefWidth="222.0" text="Clear assigned" AnchorPane.bottomAnchor="258.6" AnchorPane.leftAnchor="14.0" />
+    <ListView fx:id="filteredOrderList" layoutX="263.0" layoutY="201.0" onMouseClicked="#loadAssignedEmployee" prefHeight="299.0" prefWidth="222.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="201.0" />
+    <DatePicker fx:id="intervalStart" layoutX="263.0" layoutY="14.0" prefHeight="26.0" prefWidth="222.0" promptText="Interval start" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="14.0" />
+    <DatePicker fx:id="intervalEnd" layoutX="263.0" layoutY="50.0" prefHeight="26.0" prefWidth="222.0" promptText="Interval end" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="50.0" />
+    <ChoiceBox fx:id="orderStatus" layoutX="263.0" layoutY="87.0" prefHeight="26.0" prefWidth="222.0" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="87.0" />
+    <Separator layoutX="235.0" orientation="VERTICAL" prefHeight="515.0" prefWidth="31.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <ChoiceBox fx:id="employeeChoice" layoutX="263.0" layoutY="123.0" prefHeight="26.0" prefWidth="222.0" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="123.0" />
+    <Button layoutX="263.0" layoutY="161.0" mnemonicParsing="false" onAction="#filterOrders" prefHeight="26.0" prefWidth="222.0" text="Filter" AnchorPane.leftAnchor="263.0" AnchorPane.topAnchor="161.0" />
+   <Label fx:id="sum" layoutX="510.0" layoutY="18.0" prefHeight="18.0" prefWidth="130.0" text="The sum: " AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="14.0" />
+</AnchorPane>

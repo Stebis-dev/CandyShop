@@ -2,6 +2,7 @@ package com.CandyShop.controllers.mainShop;
 
 import com.CandyShop.hibernateControllers.CustomHib;
 import com.CandyShop.model.*;
+import com.CandyShop.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -29,11 +30,11 @@ public class MainShopController implements Initializable, MainShopHandler {
     @FXML
     public Tab productCreationTab;
     @FXML
-    public Tab commentTab;
-    @FXML
     public Tab OrderTab;
     @FXML
     public Tab orderEmployeeTab;
+    @FXML
+    public Tab detailOrderTab;
 
     @FXML
     private ProductController productSectionController;
@@ -48,11 +49,11 @@ public class MainShopController implements Initializable, MainShopHandler {
     @FXML
     private OrderController orderSectionController;
     @FXML
-    private CommentController commentSectionController;
-    @FXML
     private UserController userSectionController;
     @FXML
     private OrderEmployeeController orderEmployeeSectionController;
+    @FXML
+    private DetailOrderController detailOrderSectionController;
 
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
@@ -66,10 +67,25 @@ public class MainShopController implements Initializable, MainShopHandler {
         customHib = new CustomHib(entityManagerFactory);
         this.currentUser = currentUser;
         tabPane.getTabs().remove(selectedProductTab);
-
+        limitAccess();
         loadTabValues();
     }
 
+    private void limitAccess() {
+        if (currentUser instanceof Manager) {
+            tabPane.getTabs().remove(catalogTab);
+            tabPane.getTabs().remove(cartTab);
+            tabPane.getTabs().remove(OrderTab);
+        } else if (currentUser instanceof Customer) {
+            tabPane.getTabs().remove(productCreationTab);
+            tabPane.getTabs().remove(usersTab);
+            tabPane.getTabs().remove(orderEmployeeTab);
+            tabPane.getTabs().remove(detailOrderTab);
+            tabPane.getTabs().remove(warehouseTab);
+        } else {
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Error", "Detected an system error", "Please reinstall the program to fix this problem");
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -93,11 +109,11 @@ public class MainShopController implements Initializable, MainShopHandler {
                 productCreationSectionController.loadData();
             } else if (usersTab.isSelected()) {
                 userSectionController.setEntityManagerFactory(entityManagerFactory);
+                userSectionController.setCurrentUser(currentUser);
+                userSectionController.loadData();
             } else if (warehouseTab.isSelected()) {
                 warehouseSectionController.setEntityManagerFactory(entityManagerFactory);
                 warehouseSectionController.loadData();
-            } else if (commentTab.isSelected()) {
-                commentSectionController.setEntityManagerFactory(entityManagerFactory);
             } else if (OrderTab.isSelected()) {
                 orderSectionController.setEntityManagerFactory(entityManagerFactory);
                 orderSectionController.setCurrentUser(currentUser);
@@ -106,6 +122,10 @@ public class MainShopController implements Initializable, MainShopHandler {
                 orderEmployeeSectionController.setEntityManagerFactory(entityManagerFactory);
                 orderEmployeeSectionController.setCurrentUser(currentUser);
                 orderEmployeeSectionController.loadData();
+            } else if (detailOrderTab.isSelected()) {
+                detailOrderSectionController.setEntityManagerFactory(entityManagerFactory);
+                detailOrderSectionController.setCurrentUser(currentUser);
+                detailOrderSectionController.loadData();
             }
         } catch (NullPointerException ignored) {
 
