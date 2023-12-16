@@ -29,6 +29,6 @@
             <TableColumn fx:id="managerTableEmploymentDate" prefWidth="114.4000244140625" text="Employment Date" />
         </columns>
     </TableView>
-   <Button layoutX="619.0" layoutY="327.0" mnemonicParsing="false" onAction="#createUser" text="Create user" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+   <Button fx:id="createUserButton" layoutX="619.0" layoutY="327.0" mnemonicParsing="false" onAction="#createUser" text="Create user" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 
 </AnchorPane>

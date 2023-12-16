@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -63,6 +64,8 @@ public class UserController {
     public TableColumn<ManagerTableGuidelines, String> managerTableMedicalCertificate;
     @FXML
     public TableColumn<ManagerTableGuidelines, String> managerTableEmploymentDate;
+    @FXML
+    public Button createUserButton;
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
     private User currentUser;
@@ -80,6 +83,11 @@ public class UserController {
     public void loadData() {
         loadUsers();
         loadManagers();
+        if (((Manager) currentUser).isAdmin()) {
+            createUserButton.setVisible(true);
+        } else {
+            createUserButton.setVisible(false);
+        }
     }
 
     private void loadUsers() {
@@ -90,7 +98,11 @@ public class UserController {
         ObservableList<CustomerTableGuidelines> customers = FXCollections.observableArrayList(customerTableGuidelinesList);
 
         customerTable.setItems(customers);
-        customerTable.setEditable(true);
+        if (((Manager) currentUser).isAdmin()) {
+            customerTable.setEditable(true);
+        }
+        customerTable.setEditable(false);
+
 
         customerTableId.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerTableName.setCellValueFactory(new PropertyValueFactory<>("name"));
