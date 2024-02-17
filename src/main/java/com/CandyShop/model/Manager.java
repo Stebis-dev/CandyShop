@@ -22,8 +22,8 @@ public class Manager extends User {
     private String medCertificate;
     private LocalDate employmentDate;
     private boolean isAdmin;
-    @ManyToMany
-    private List<Warehouse> worksAtWarehouse;
+//    @ManyToMany
+//    private List<Warehouse> worksAtWarehouse;
 
     public Manager(String login, String password, LocalDate birthDate, String name, String surname, String employeeId, String medCertificate, LocalDate employmentDate, boolean isAdmin) {
         super(login, password, birthDate, name, surname);
