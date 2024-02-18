@@ -29,13 +29,35 @@ The Candy shop project is a comprehensive system designed to modernize the shopp
 
 The project architecture includes a detailed breakdown of data structures, additional packages, libraries used, and a simplified implementation schema, ensuring a robust and scalable system.
 
+**Application class diagram:**
 ![class_diagram](https://github.com/Stebis-dev/CandyShop/assets/65848857/2224d68b-2f91-460a-aa55-a1b27fd0f6d5)
+**Application entity relationship diagram:**
 ![Entity relationship diagram](https://github.com/Stebis-dev/CandyShop/assets/65848857/30278eb5-a30b-4131-b118-0d4d919983fd)
+**Application desktop package diagram:**
 ![Desktop_package_diagram](https://github.com/Stebis-dev/CandyShop/assets/65848857/9d4482cc-31ad-4b38-862c-271f209e8ca8)
 
 ## User Interfaces
 
-The application features several user interfaces including login, registration, product catalog, detailed product views, and shopping cart management, each designed with user experience in mind.
+The application features several user interfaces including:
+* **Login**
+  
+![login](https://github.com/Stebis-dev/CandyShop/assets/65848857/6a606d6e-cbed-44aa-ae3f-335e0752db9e)
+
+* **Registration**
+  
+![register](https://github.com/Stebis-dev/CandyShop/assets/65848857/8b98c370-62aa-4a52-8589-00993070440d)
+
+* **Product catalog**
+
+![catalog](https://github.com/Stebis-dev/CandyShop/assets/65848857/40eccdaa-e42b-4842-8dfe-703a46ab519d)
+
+* **Detailed product views**
+
+![product](https://github.com/Stebis-dev/CandyShop/assets/65848857/e0f8aa44-dd43-42ce-95de-12a49c336690)
+
+* **Shopping cart management**
+
+![cart](https://github.com/Stebis-dev/CandyShop/assets/65848857/0a7d049b-b2ec-4cbc-b442-ff9466ac8f8c)
 
 ## Conclusion
 
